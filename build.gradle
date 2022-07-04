@@ -6,13 +6,22 @@ plugins {
 	id 'checkstyle'
 }
 
+group = 'hexlet.code'
+version = '1.0-SNAPSHOT'
+
 application {
 	mainClass = 'hexlet.code.app.AppApplication'
 }
 
-group = 'hexlet.code'
-version = '1.0-SNAPSHOT'
-sourceCompatibility = '17'
+compileJava {
+	options.release = 17
+	options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+}
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
 
 repositories {
 	mavenCentral()
@@ -21,11 +30,24 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.7.1'
+	runtimeOnly (
+			'com.h2database:h2:1.4.200',
+			'org.postgresql:postgresql:42.2.24'
+	)
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+wrapper {
+	gradleVersion = '7.4.2'
+	distributionType = Wrapper.DistributionType.ALL
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
 }
 
 task stage(dependsOn: [clean, installDist])

@@ -1,25 +1,41 @@
 package hexlet.code.app.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @Email
+    @Column(unique = true)
+    @NotBlank
     private String email;
-    @JsonIgnore
+
+    @NotBlank
     private String password;
-    @CreatedDate
+
+    @CreationTimestamp
+    @Temporal(TIMESTAMP)
     private Date createdAt;
+
 }

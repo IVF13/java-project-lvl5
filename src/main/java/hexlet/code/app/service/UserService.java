@@ -1,15 +1,21 @@
 package hexlet.code.app.service;
 
+import hexlet.code.app.model.User;
 import hexlet.code.app.model.UserDTO;
+import javassist.NotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserDTO getUserById();
+    UserDTO getUserById(String id) throws NotFoundException;
+
     List<UserDTO> getAllUsers();
-    UserDTO createUser(UserDTO userDTO);
-    UserDTO updateUser(String id, UserDTO userDTO);
-    String deleteUser(String id);
+
+    UserDTO createUser(User user);
+
+    UserDTO updateUser(String id, User user) throws NotFoundException;
+
+    String deleteUser(String id) throws NotFoundException;
 }

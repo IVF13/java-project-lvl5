@@ -3,13 +3,10 @@ package hexlet.code.app.controller;
 import hexlet.code.app.model.User;
 import hexlet.code.app.model.UserDTO;
 import hexlet.code.app.service.UserService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,8 +38,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<UserDTO> updateUser
-            (@PathVariable String id, @RequestBody @Valid User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody @Valid User user) {
         UserDTO userDTO = userService.updateUser(id, user);
         return ResponseEntity.ok().body(userDTO);
     }

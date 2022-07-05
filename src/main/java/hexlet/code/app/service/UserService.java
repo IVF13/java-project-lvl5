@@ -2,8 +2,6 @@ package hexlet.code.app.service;
 
 import hexlet.code.app.model.User;
 import hexlet.code.app.model.UserDTO;
-import javassist.NotFoundException;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 

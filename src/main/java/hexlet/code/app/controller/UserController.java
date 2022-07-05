@@ -24,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) throws NotFoundException {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok().body(userDTO);
     }
@@ -42,26 +42,14 @@ public class UserController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<UserDTO> updateUser
-            (@PathVariable String id, @RequestBody @Valid User user) throws NotFoundException {
+            (@PathVariable String id, @RequestBody @Valid User user) {
         UserDTO userDTO = userService.updateUser(id, user);
         return ResponseEntity.ok().body(userDTO);
     }
 
     @DeleteMapping(path = "/{id}")
-    public String deleteUser(@PathVariable String id) throws NotFoundException {
+    public String deleteUser(@PathVariable String id) {
         return userService.deleteUser(id);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseEntity<String> handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleNotFoundExceptions(NotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }

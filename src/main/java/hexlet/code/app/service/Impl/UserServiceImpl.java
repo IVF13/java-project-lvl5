@@ -5,11 +5,11 @@ import hexlet.code.app.model.UserDTO;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.UserService;
 import hexlet.code.app.util.UserDTOMapper;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 
 import javax.transaction.Transactional;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO getUserById(String id) throws NotFoundException {
+    public UserDTO getUserById(String id) {
         User user = userRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (user == null) {
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(String id, User user) throws NotFoundException {
+    public UserDTO updateUser(String id, User user) {
         User userToUpdate = userRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (userToUpdate == null) {
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String deleteUser(String id) throws NotFoundException {
+    public String deleteUser(String id) {
 
         if (!userRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("User Not Found");

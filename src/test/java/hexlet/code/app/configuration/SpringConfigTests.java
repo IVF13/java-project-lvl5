@@ -10,7 +10,7 @@ import static hexlet.code.app.configuration.SpringConfigTests.TEST_PROFILE;
 @Profile(TEST_PROFILE)
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "hexlet.code.app")
-@PropertySource(value = "classpath:/config/application.yml")
+@PropertySource(value = "classpath:application.yml")
 public class SpringConfigTests {
 
     public static final String TEST_PROFILE = "test";

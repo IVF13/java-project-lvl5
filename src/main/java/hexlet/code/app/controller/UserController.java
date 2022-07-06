@@ -12,15 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
+
 @Validated
 @RestController
-@RequestMapping("api/users/")
+@RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserController {
+    public static final String USER_CONTROLLER_PATH = "/users";
+    public static final String ID = "/{id}";
 
     private final UserService userService;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = ID)
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok().body(userDTO);
@@ -37,13 +41,13 @@ public class UserController {
         return ResponseEntity.ok().body(userService.createUser(user));
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = ID)
     public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody @Valid User user) {
         UserDTO userDTO = userService.updateUser(id, user);
         return ResponseEntity.ok().body(userDTO);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = ID)
     public String deleteUser(@PathVariable String id) {
         return userService.deleteUser(id);
     }

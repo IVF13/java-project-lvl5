@@ -38,4 +38,11 @@ public class User {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
 }

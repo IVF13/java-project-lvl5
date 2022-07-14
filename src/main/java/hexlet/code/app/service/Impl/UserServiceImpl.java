@@ -7,6 +7,9 @@ import hexlet.code.app.service.UserService;
 import hexlet.code.app.util.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -18,7 +21,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserDTOMapper userDTOMapper;
@@ -44,6 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("User already exists");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
@@ -79,4 +86,10 @@ public class UserServiceImpl implements UserService {
 
         return "User successfully deleted";
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NoPermissionException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,13 +43,14 @@ public class UserController {
     }
 
     @PutMapping(path = ID)
-    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody @Valid User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody @Valid User user)
+            throws NoPermissionException {
         UserDTO userDTO = userService.updateUser(id, user);
         return ResponseEntity.ok().body(userDTO);
     }
 
     @DeleteMapping(path = ID)
-    public String deleteUser(@PathVariable String id) {
+    public String deleteUser(@PathVariable String id) throws NoPermissionException {
         return userService.deleteUser(id);
     }
 

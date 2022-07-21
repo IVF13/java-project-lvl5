@@ -40,11 +40,7 @@ public class AuthController {
                             )
                     );
 
-            System.out.println(authenticate);
-
             User user = (User) authenticate.getPrincipal();
-
-            System.out.println(user);
 
             return ResponseEntity.ok().body(jwtTokenUtil.generateToken(user));
         } catch (BadCredentialsException ex) {

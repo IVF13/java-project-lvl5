@@ -7,6 +7,8 @@ import hexlet.code.app.service.UserService;
 import hexlet.code.app.util.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 
+import javax.naming.NoPermissionException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -60,7 +63,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO updateUser(String id, User user) {
+    public UserDTO updateUser(String id, User user) throws NoPermissionException {
+        checkIdentityPermissions(id);
+
         User userToUpdate = userRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (userToUpdate == null) {
@@ -76,7 +81,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String deleteUser(String id) {
+    public String deleteUser(String id) throws NoPermissionException {
+        checkIdentityPermissions(id);
 
         if (!userRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("User Not Found");
@@ -90,6 +96,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
+    }
+
+    private void checkIdentityPermissions(String id) throws NoPermissionException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = (User) authentication.getPrincipal();
+
+        if (!authUser.getId().equals(Long.parseLong(id))){
+            throw new NoPermissionException("You can edit and delete only your profile");
+        }
+
     }
 
 }

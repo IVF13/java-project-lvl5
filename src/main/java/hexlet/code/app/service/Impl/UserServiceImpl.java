@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User authUser = (User) authentication.getPrincipal();
 
-        if (!authUser.getId().equals(Long.parseLong(id))){
+        if (!authUser.getId().equals(Long.parseLong(id))) {
             throw new NoPermissionException("You can edit and delete only your profile");
         }
 

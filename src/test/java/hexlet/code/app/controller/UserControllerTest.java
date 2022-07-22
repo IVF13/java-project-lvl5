@@ -5,7 +5,6 @@ import hexlet.code.app.configuration.SpringConfigTests;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,9 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -27,14 +23,8 @@ import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static hexlet.code.app.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -46,20 +36,8 @@ public class UserControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
     private TestUtils utils;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Before()
-    public void setup()
-    {
-        //Init MockMvc Object and build
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     @AfterEach
     public void clear() {
@@ -67,11 +45,20 @@ public class UserControllerTest {
     }
 
     @Test
+    public void registration() throws Exception {
+        assertEquals(0, userRepository.count());
+        utils.regDefaultUser().andExpect(status().isCreated());
+        assertEquals(1, userRepository.count());
+    }
+
+    @Test
     public void getUserById() throws Exception {
-        utils.regDefaultUser();
+       utils.regDefaultUser();
         final User expectedUser = userRepository.findAll().get(0);
-        final var response = mockMvc.perform(
-                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId())).andExpect(status().isOk())
+        final var response = utils.perform(
+                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId()),
+                        expectedUser.getEmail()
+                ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
@@ -84,15 +71,15 @@ public class UserControllerTest {
         assertEquals(expectedUser.getLastName(), user.getLastName());
     }
 
-//    @Disabled("For now active only positive tests")
-//    @Test
-//    public void getUserByIdFails() throws Exception {
-//        utils.regDefaultUser();
-//        final User expectedUser = userRepository.findAll().get(0);
-//        utils.perform(get(USER_CONTROLLER_PATH + ID, expectedUser.getId()))
-//                .andExpect(status().isUnauthorized());
-//
-//    }
+    @Disabled("For now active only positive tests")
+    @Test
+    public void getUserByIdFails() throws Exception {
+        utils.regDefaultUser();
+        final User expectedUser = userRepository.findAll().get(0);
+        utils.perform(get(USER_CONTROLLER_PATH + ID, expectedUser.getId()))
+                .andExpect(status().isUnauthorized());
+
+    }
 
     @Test
     public void getAllUsers() throws Exception {
@@ -108,14 +95,14 @@ public class UserControllerTest {
         assertThat(users).hasSize(1);
     }
 
-//    @Disabled("For now active only positive tests")
-//    @Test
-//    public void twiceRegTheSameUserFail() throws Exception {
-//        utils.regDefaultUser().andExpect(status().isCreated());
-//        utils.regDefaultUser().andExpect(status().isBadRequest());
-//
-//        assertEquals(1, userRepository.count());
-//    }
+    @Disabled("For now active only positive tests")
+    @Test
+    public void twiceRegTheSameUserFail() throws Exception {
+        utils.regDefaultUser().andExpect(status().isCreated());
+        utils.regDefaultUser().andExpect(status().isBadRequest());
+
+        assertEquals(1, userRepository.count());
+    }
 
 //    @Test
 //    public void login() throws Exception {
@@ -127,7 +114,7 @@ public class UserControllerTest {
 //        final var loginRequest = post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
 //        utils.perform(loginRequest).andExpect(status().isOk());
 //    }
-
+//
 //    @Disabled("For now active only positive tests")
 //    @Test
 //    public void loginFail() throws Exception {
@@ -138,55 +125,55 @@ public class UserControllerTest {
 //        final var loginRequest = post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
 //        utils.perform(loginRequest).andExpect(status().isUnauthorized());
 //    }
-
-    @Test
-    public void updateUser() throws Exception {
-        utils.regDefaultUser();
-
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
-
-        final var user = new User(TEST_USERNAME_2, "new name", "new last name", "new pwd");
-
-        final var updateRequest = put(USER_CONTROLLER_PATH + ID, userId)
-                .content(asJson(user))
-                .contentType(APPLICATION_JSON);
-
-        utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
-
-        assertTrue(userRepository.existsById(userId));
-        assertNull(userRepository.findByEmail(TEST_USERNAME).orElse(null));
-        assertNotNull(userRepository.findByEmail(TEST_USERNAME_2).orElse(null));
-    }
-
-    @Test
-    public void deleteUser() throws Exception {
-        utils.regDefaultUser();
-
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
-
-        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME)
-                .andExpect(status().isOk());
-
-        assertEquals(0, userRepository.count());
-    }
-
-    @Disabled("For now active only positive tests")
-    @Test
-    public void deleteUserFails() throws Exception {
-        utils.regDefaultUser();
-        utils.regUser(new User(
-                "fname",
-                "lname",
-                TEST_USERNAME_2,
-                "pwd"
-        ));
-
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
-
-        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME_2)
-                .andExpect(status().isForbidden());
-
-        assertEquals(2, userRepository.count());
-    }
+//
+//    @Test
+//    public void updateUser() throws Exception {
+//        utils.regDefaultUser();
+//
+//        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+//
+//        final var userDto = new UserDto(TEST_USERNAME_2, "new name", "new last name", "new pwd");
+//
+//        final var updateRequest = put(USER_CONTROLLER_PATH + ID, userId)
+//                .content(asJson(userDto))
+//                .contentType(APPLICATION_JSON);
+//
+//        utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
+//
+//        assertTrue(userRepository.existsById(userId));
+//        assertNull(userRepository.findByEmail(TEST_USERNAME).orElse(null));
+//        assertNotNull(userRepository.findByEmail(TEST_USERNAME_2).orElse(null));
+//    }
+//
+//    @Test
+//    public void deleteUser() throws Exception {
+//        utils.regDefaultUser();
+//
+//        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+//
+//        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME)
+//                .andExpect(status().isOk());
+//
+//        assertEquals(0, userRepository.count());
+//    }
+//
+//    @Disabled("For now active only positive tests")
+//    @Test
+//    public void deleteUserFails() throws Exception {
+//        utils.regDefaultUser();
+//        utils.regUser(new UserDto(
+//                TEST_USERNAME_2,
+//                "fname",
+//                "lname",
+//                "pwd"
+//        ));
+//
+//        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+//
+//        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME_2)
+//                .andExpect(status().isForbidden());
+//
+//        assertEquals(2, userRepository.count());
+//    }
 
 }

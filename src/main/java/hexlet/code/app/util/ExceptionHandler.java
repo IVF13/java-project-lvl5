@@ -1,5 +1,6 @@
 package hexlet.code.app.util;
 
+import org.springframework.security.authentication.LockedException;
 import org.webjars.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.naming.NoPermissionException;
+import javax.persistence.EntityExistsException;
 
 @ResponseBody
 @ControllerAdvice
@@ -25,7 +27,17 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(NoPermissionException.class)
     public ResponseEntity<String> handleNoPermissionException(NoPermissionException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<String> handleEntityExistsException(EntityExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(LockedException.class)
+    public ResponseEntity<String> handleLockedException(LockedException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
 }

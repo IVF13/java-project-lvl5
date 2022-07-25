@@ -35,7 +35,7 @@ public class TestUtils {
     }
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
     private UserRepository userRepository;

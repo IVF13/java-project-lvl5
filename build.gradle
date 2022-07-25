@@ -12,6 +12,8 @@ plugins {
 	id 'com.github.johnrengelman.processes' version '0.5.0'
 	// Сборщик фронтенда
 	id 'org.siouan.frontend-jdk11' version '6.0.0'
+	//code climate
+	id 'jacoco'
 }
 
 group = 'hexlet.code'
@@ -93,6 +95,39 @@ wrapper {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+	testlogger {
+		theme 'mocha'
+		showExceptions true
+		showStackTraces true
+		showFullStackTraces false
+		showCauses true
+		slowThreshold 2000
+		showSummary true
+		showSimpleNames false
+		showPassed true
+		showSkipped true
+		showFailed true
+		showStandardStreams false
+		showPassedStandardStreams true
+		showSkippedStandardStreams true
+		showFailedStandardStreams true
+		logLevel 'lifecycle'
+	}
+}
+
+jacocoTestReport {
+	dependsOn test
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+	reports {
+		xml.required = true
+	}
 }
 
 // Настраиваем таску diffChangeLog таким образом,

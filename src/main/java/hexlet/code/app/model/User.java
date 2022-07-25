@@ -1,8 +1,6 @@
 package hexlet.code.app.model;
 
-
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +16,12 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Data
 @Entity
 @Table(name = "users")
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -31,8 +30,8 @@ public class User implements UserDetails {
     @NotBlank
     private String lastName;
 
-    @Email
     @Column(unique = true)
+    @Email
     @NotBlank
     private String email;
 
@@ -48,6 +47,10 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(final Long id) {
+        this.id = id;
     }
 
     @Override

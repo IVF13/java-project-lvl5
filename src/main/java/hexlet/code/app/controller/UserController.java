@@ -5,6 +5,7 @@ import hexlet.code.app.model.UserDTO;
 import hexlet.code.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(path = ID)
-    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) throws NoPermissionException {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok().body(userDTO);
     }
@@ -39,7 +40,7 @@ public class UserController {
 
     @PostMapping(path = "")
     public ResponseEntity<UserDTO> createUser(@RequestBody @Valid User user) {
-        return ResponseEntity.ok().body(userService.createUser(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 
     @PutMapping(path = ID)

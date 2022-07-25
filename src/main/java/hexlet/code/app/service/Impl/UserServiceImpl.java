@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-
 import javax.naming.NoPermissionException;
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -32,7 +32,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO getUserById(String id) {
+    public UserDTO getUserById(String id) throws NoPermissionException {
+        checkIdentityPermissions(id);
+
         User user = userRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (user == null) {
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO createUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new EntityExistsException("User already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

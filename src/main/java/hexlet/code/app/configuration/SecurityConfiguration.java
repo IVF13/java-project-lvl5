@@ -18,9 +18,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,6 +41,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
     private final JwtTokenFilter jwtTokenFilter;
+
+    private final RequestMatcher publicUrls = new OrRequestMatcher(
+            new AntPathRequestMatcher("/api/login", POST.toString()),
+            new AntPathRequestMatcher("/api/users", POST.toString()),
+            new AntPathRequestMatcher("/api/users", GET.toString()),
+            new NegatedRequestMatcher(new AntPathRequestMatcher("/api/**"))
+    );
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -69,15 +83,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .requestMatchers(publicUrls).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(
                 jwtTokenFilter,
                 UsernamePasswordAuthenticationFilter.class
-        );
+        )
+                .sessionManagement().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .logout().disable();
     }
 
     @Bean

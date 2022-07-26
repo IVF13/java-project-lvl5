@@ -5,11 +5,15 @@ import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import javax.persistence.EntityExistsException;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TaskStatusServiceImpl implements TaskStatusService {
 

@@ -22,11 +22,11 @@ import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserController {
     public static final String USER_CONTROLLER_PATH = "/users";
-    public static final String ID = "/{id}";
+    public static final String USER_ID = "/{id}";
 
     private final UserService userService;
 
-    @GetMapping(path = ID)
+    @GetMapping(path = USER_ID)
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) throws NoPermissionException {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok().body(userDTO);
@@ -43,14 +43,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 
-    @PutMapping(path = ID)
+    @PutMapping(path = USER_ID)
     public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody @Valid User user)
             throws NoPermissionException {
         UserDTO userDTO = userService.updateUser(id, user);
         return ResponseEntity.ok().body(userDTO);
     }
 
-    @DeleteMapping(path = ID)
+    @DeleteMapping(path = USER_ID)
     public String deleteUser(@PathVariable String id) throws NoPermissionException {
         return userService.deleteUser(id);
     }

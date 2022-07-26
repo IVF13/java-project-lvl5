@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static hexlet.code.app.configuration.SpringConfigTests.TEST_PROFILE;
-import static hexlet.code.app.controller.UserController.ID;
+import static hexlet.code.app.controller.UserController.USER_ID;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static hexlet.code.app.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +58,7 @@ public class UserControllerTest {
         utils.regDefaultUser();
         final User expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
-                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId()),
+                        get(USER_CONTROLLER_PATH + USER_ID, expectedUser.getId()),
                         expectedUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -81,7 +81,7 @@ public class UserControllerTest {
         final User expectedUser = userRepository.findAll().get(0);
         final User anotherUser = userRepository.findAll().get(1);
 
-        utils.perform(get(USER_CONTROLLER_PATH + ID, expectedUser.getId()), anotherUser)
+        utils.perform(get(USER_CONTROLLER_PATH + USER_ID, expectedUser.getId()), anotherUser)
                 .andExpect(status().isUnauthorized());
     }
 
@@ -141,7 +141,7 @@ public class UserControllerTest {
 
         final var user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
 
-        final var updateRequest = put(USER_CONTROLLER_PATH + ID, userId)
+        final var updateRequest = put(USER_CONTROLLER_PATH + USER_ID, userId)
                 .content(asJson(user))
                 .contentType(APPLICATION_JSON);
 
@@ -159,7 +159,7 @@ public class UserControllerTest {
         final var existsUser = userRepository.findByEmail(TEST_USERNAME).get();
         final Long userId = existsUser.getId();
 
-        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), existsUser)
+        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID, userId), existsUser)
                 .andExpect(status().isOk());
 
         assertEquals(0, userRepository.count());
@@ -180,7 +180,7 @@ public class UserControllerTest {
 
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
 
-        utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), user)
+        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID, userId), user)
                 .andExpect(status().isUnauthorized());
 
         assertEquals(2, userRepository.count());

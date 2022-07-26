@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static hexlet.code.app.configuration.SpringConfigTests.TEST_PROFILE;
-import static hexlet.code.app.controller.UserController.USER_ID;
+import static hexlet.code.app.controller.UserController.USER_ID_IN_CONTROLLER;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static hexlet.code.app.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,18 +47,18 @@ public class UserControllerTest {
     }
 
     @Test
-    public void registration() throws Exception {
+    public void registrationTest() throws Exception {
         assertEquals(0, userRepository.count());
         utils.regDefaultUser().andExpect(status().isCreated());
         assertEquals(1, userRepository.count());
     }
 
     @Test
-    public void getUserById() throws Exception {
+    public void getUserByIdTest() throws Exception {
         utils.regDefaultUser();
         final User expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
-                        get(USER_CONTROLLER_PATH + USER_ID, expectedUser.getId()),
+                        get(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, expectedUser.getId()),
                         expectedUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -74,19 +74,19 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getUserByIdFails() throws Exception {
+    public void getUserByIdFailsTest() throws Exception {
         utils.regDefaultUser();
         utils.regUser(new User("new name", "new last name", TEST_USERNAME_2, "new pwd"));
 
         final User expectedUser = userRepository.findAll().get(0);
         final User anotherUser = userRepository.findAll().get(1);
 
-        utils.perform(get(USER_CONTROLLER_PATH + USER_ID, expectedUser.getId()), anotherUser)
+        utils.perform(get(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, expectedUser.getId()), anotherUser)
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void getAllUsers() throws Exception {
+    public void getAllUsersTest() throws Exception {
         utils.regDefaultUser();
         final var response = utils.perform(get(USER_CONTROLLER_PATH))
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void twiceRegTheSameUserFail() throws Exception {
+    public void twiceRegTheSameUserFailTest() throws Exception {
         utils.regDefaultUser().andExpect(status().isCreated());
         utils.regDefaultUser().andExpect(status().isBadRequest());
 
@@ -108,7 +108,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void login() throws Exception {
+    public void loginTest() throws Exception {
         utils.regDefaultUser();
         final AuthRequest loginDto = new AuthRequest(
                 utils.getTestRegistrationUser().getEmail(),
@@ -122,7 +122,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void loginFail() throws Exception {
+    public void loginFailTest() throws Exception {
         final AuthRequest loginDto = new AuthRequest(
                 utils.getTestRegistrationUser().getEmail(),
                 utils.getTestRegistrationUser().getPassword()
@@ -133,7 +133,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void updateUser() throws Exception {
+    public void updateUserTest() throws Exception {
         utils.regDefaultUser();
 
         final var existsUser = userRepository.findByEmail(TEST_USERNAME).get();
@@ -141,7 +141,7 @@ public class UserControllerTest {
 
         final var user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
 
-        final var updateRequest = put(USER_CONTROLLER_PATH + USER_ID, userId)
+        final var updateRequest = put(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId)
                 .content(asJson(user))
                 .contentType(APPLICATION_JSON);
 
@@ -153,20 +153,20 @@ public class UserControllerTest {
     }
 
     @Test
-    public void deleteUser() throws Exception {
+    public void deleteUserTest() throws Exception {
         utils.regDefaultUser();
 
         final var existsUser = userRepository.findByEmail(TEST_USERNAME).get();
         final Long userId = existsUser.getId();
 
-        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID, userId), existsUser)
+        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId), existsUser)
                 .andExpect(status().isOk());
 
         assertEquals(0, userRepository.count());
     }
 
     @Test
-    public void deleteUserFails() throws Exception {
+    public void deleteUserFailsTest() throws Exception {
         utils.regDefaultUser();
 
         var user = new User(
@@ -180,7 +180,7 @@ public class UserControllerTest {
 
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
 
-        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID, userId), user)
+        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId), user)
                 .andExpect(status().isUnauthorized());
 
         assertEquals(2, userRepository.count());

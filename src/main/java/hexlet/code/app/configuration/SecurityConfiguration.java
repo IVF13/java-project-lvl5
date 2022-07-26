@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/login", POST.toString()),
             new AntPathRequestMatcher("/api/users", POST.toString()),
             new AntPathRequestMatcher("/api/users", GET.toString()),
+            new AntPathRequestMatcher("/api/statuses/**", GET.toString()),
             new NegatedRequestMatcher(new AntPathRequestMatcher("/api/**"))
     );
 
@@ -86,9 +87,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(
-                jwtTokenFilter,
-                UsernamePasswordAuthenticationFilter.class
-        )
+                        jwtTokenFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
                 .sessionManagement().disable()
                 .formLogin().disable()
                 .httpBasic().disable()

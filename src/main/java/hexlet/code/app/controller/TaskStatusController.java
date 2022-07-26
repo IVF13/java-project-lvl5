@@ -40,14 +40,13 @@ public class TaskStatusController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<TaskStatus> createTaskStatus
-            (@RequestBody @Valid TaskStatus taskStatus) {
+    public ResponseEntity<TaskStatus> createTaskStatus(@RequestBody @Valid TaskStatus taskStatus) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskStatusService.createTaskStatus(taskStatus));
     }
 
     @PutMapping(path = TASK_STATUS_ID)
-    public ResponseEntity<TaskStatus> updateTaskStatus
-            (@PathVariable String id, @RequestBody @Valid TaskStatus taskStatus) {
+    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable String id,
+                                                       @RequestBody @Valid TaskStatus taskStatus) {
         TaskStatus updatedTaskStatus = taskStatusService.updateTaskStatus(id, taskStatus);
         return ResponseEntity.ok().body(updatedTaskStatus);
     }

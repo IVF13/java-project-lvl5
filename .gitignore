@@ -1,11 +1,10 @@
 HELP.md
 .gradle
 build/
-frontend/
-node/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -36,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+*.db
+
+node
+frontend/build
+frontend/node_modules
+
+.env

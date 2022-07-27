@@ -17,4 +17,5 @@ public interface UserService {
     UserDTO updateUser(String id, User user) throws NoPermissionException;
 
     String deleteUser(String id) throws NoPermissionException;
+
 }

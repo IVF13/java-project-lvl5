@@ -5,6 +5,7 @@ import hexlet.code.app.model.TaskStatus;
 import java.util.List;
 
 public interface TaskStatusService {
+
     TaskStatus getTaskStatusById(String id);
 
     List<TaskStatus> getAllTaskStatuses();

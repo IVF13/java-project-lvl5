@@ -35,11 +35,11 @@ public class Task {
 
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User author;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",  insertable = false, updatable = false)
     private User executor;
 
     @CreationTimestamp

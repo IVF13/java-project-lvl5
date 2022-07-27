@@ -26,7 +26,7 @@ public class TaskStatus {
     @Size(min = 1)
     private String name;
 
-    @OneToMany(mappedBy = "task_status", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "taskStatus", fetch = FetchType.EAGER)
     private List<Task> tasks;
 
     @CreationTimestamp

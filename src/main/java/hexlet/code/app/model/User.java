@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -37,6 +38,12 @@ public class User implements UserDetails {
 
     @NotBlank
     private String password;
+
+    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
+    private List<Task> ownedTasks;
+
+    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
+    private List<Task> claimedTasks;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

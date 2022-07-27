@@ -1,5 +1,6 @@
 package hexlet.code.app.service.Impl;
 
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.User;
 import hexlet.code.app.model.UserDTO;
 import hexlet.code.app.repository.UserRepository;
@@ -89,6 +90,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!userRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("User Not Found");
         } else {
+            List<Task> ownedTasks = userRepository.findById(Long.parseLong(id)).get().getOwnedTasks();
+
+            if (!ownedTasks.isEmpty()) {
+                throw new RuntimeException("User have tasks, can't delete");
+            }
+
             userRepository.deleteById(Long.parseLong(id));
         }
 

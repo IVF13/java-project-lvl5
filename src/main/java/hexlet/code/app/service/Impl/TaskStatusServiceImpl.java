@@ -1,5 +1,6 @@
 package hexlet.code.app.service.Impl;
 
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
@@ -67,6 +68,13 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         if (!taskStatusRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("Task Status Not Found");
         } else {
+
+            List<Task> Tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
+
+            if (!Tasks.isEmpty()) {
+                throw new RuntimeException("Task status have assigned tasks, can't delete");
+            }
+
             taskStatusRepository.deleteById(Long.parseLong(id));
         }
 

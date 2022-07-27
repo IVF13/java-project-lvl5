@@ -25,7 +25,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         TaskStatus taskStatus = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (taskStatus == null) {
-            throw new NotFoundException("User Not Found");
+            throw new NotFoundException("Task status Not Found");
         }
 
         return taskStatus;

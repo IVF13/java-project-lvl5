@@ -3,6 +3,7 @@ package hexlet.code.app.service;
 import hexlet.code.app.model.User;
 import hexlet.code.app.model.UserDTO;
 
+import javax.management.relation.RelationException;
 import javax.naming.NoPermissionException;
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface UserService {
 
     UserDTO updateUser(String id, User user) throws NoPermissionException;
 
-    String deleteUser(String id) throws NoPermissionException;
+    String deleteUser(String id) throws NoPermissionException, RelationException;
 
 }

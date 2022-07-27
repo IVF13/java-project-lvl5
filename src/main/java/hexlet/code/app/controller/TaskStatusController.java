@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.RelationException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class TaskStatusController {
     }
 
     @DeleteMapping(path = TASK_STATUS_ID)
-    public String deleteUser(@PathVariable String id) {
+    public String deleteUser(@PathVariable String id) throws RelationException {
         return taskStatusService.deleteTaskStatus(id);
     }
 

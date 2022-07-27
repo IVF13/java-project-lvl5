@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import javax.management.relation.RelationException;
 import javax.naming.NoPermissionException;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String deleteUser(String id) throws NoPermissionException {
+    public String deleteUser(String id) throws NoPermissionException, RelationException {
         checkIdentityPermissions(id);
 
         if (!userRepository.existsById(Long.parseLong(id))) {
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             List<Task> ownedTasks = userRepository.findById(Long.parseLong(id)).get().getOwnedTasks();
 
             if (!ownedTasks.isEmpty()) {
-                throw new RuntimeException("User have tasks, can't delete");
+                throw new RelationException("User have owned tasks, unable to delete");
             }
 
             userRepository.deleteById(Long.parseLong(id));

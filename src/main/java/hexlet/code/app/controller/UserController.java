@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.RelationException;
 import javax.naming.NoPermissionException;
 import javax.validation.Valid;
 import java.util.List;
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)
-    public String deleteUser(@PathVariable String id) throws NoPermissionException {
+    public String deleteUser(@PathVariable String id) throws NoPermissionException, RelationException {
         return userService.deleteUser(id);
     }
 

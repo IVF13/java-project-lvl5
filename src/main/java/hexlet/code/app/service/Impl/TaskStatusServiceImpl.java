@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import javax.management.relation.RelationException;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -63,7 +64,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     }
 
     @Override
-    public String deleteTaskStatus(String id) {
+    public String deleteTaskStatus(String id) throws RelationException {
 
         if (!taskStatusRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("Task Status Not Found");
@@ -72,7 +73,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
             List<Task> tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
 
             if (!tasks.isEmpty()) {
-                throw new RuntimeException("Task status have assigned tasks, can't delete");
+                throw new RelationException("Task status have assigned tasks, unable to delete");
             }
 
             taskStatusRepository.deleteById(Long.parseLong(id));

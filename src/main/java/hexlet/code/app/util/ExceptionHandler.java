@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.management.relation.RelationException;
 import javax.naming.NoPermissionException;
 import javax.persistence.EntityExistsException;
 
@@ -38,6 +39,11 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(LockedException.class)
     public ResponseEntity<String> handleLockedException(LockedException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(RelationException.class)
+    public ResponseEntity<String> handleRelationException(RelationException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_MODIFIED);
     }
 
 }

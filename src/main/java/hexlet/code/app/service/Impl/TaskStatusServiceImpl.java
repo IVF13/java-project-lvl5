@@ -69,9 +69,9 @@ public class TaskStatusServiceImpl implements TaskStatusService {
             throw new NotFoundException("Task Status Not Found");
         } else {
 
-            List<Task> Tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
+            List<Task> tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
 
-            if (!Tasks.isEmpty()) {
+            if (!tasks.isEmpty()) {
                 throw new RuntimeException("Task status have assigned tasks, can't delete");
             }
 

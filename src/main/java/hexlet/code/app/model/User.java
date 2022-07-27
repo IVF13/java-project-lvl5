@@ -39,10 +39,10 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
-    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> ownedTasks;
 
-    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> claimedTasks;
 
     @CreationTimestamp

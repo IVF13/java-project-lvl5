@@ -29,17 +29,17 @@ public class Task {
     private String description;
 
     @NotNull
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
-    @JoinColumn (name="task_status_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "task_status_id")
     private TaskStatus taskStatus;
 
     @NotNull
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
-    @JoinColumn (name="user_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User author;
 
-    @ManyToOne (cascade=CascadeType.ALL)
-    @JoinColumn (name="user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User executor;
 
     @CreationTimestamp

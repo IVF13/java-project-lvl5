@@ -1,5 +1,6 @@
 package hexlet.code.app.service;
 
+import hexlet.code.app.model.DTO.TaskDTO;
 import hexlet.code.app.model.entity.Task;
 
 import java.util.List;
@@ -10,9 +11,9 @@ public interface TaskService {
 
     List<Task> getAllTasks();
 
-    Task createTask(Task task);
+    Task createTask(TaskDTO taskDTO);
 
-    Task updateTask(String id, Task task);
+    Task updateTask(String id, TaskDTO taskDTO);
 
     String deleteTask(String id);
 

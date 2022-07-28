@@ -1,5 +1,6 @@
 package hexlet.code.app.controller;
 
+import hexlet.code.app.model.DTO.TaskDTO;
 import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +40,14 @@ public class TaskController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(task));
+    public ResponseEntity<Task> createTask(@RequestBody @Valid TaskDTO taskDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskDTO));
     }
 
     @PutMapping(path = TASK_ID)
     public ResponseEntity<Task> updateTask(@PathVariable String id,
-                                           @RequestBody @Valid Task task) {
-        Task updatedTask = taskService.updateTask(id, task);
+                                           @RequestBody @Valid TaskDTO taskDTO) {
+        Task updatedTask = taskService.updateTask(id, taskDTO);
         return ResponseEntity.ok().body(updatedTask);
     }
 

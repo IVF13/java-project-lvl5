@@ -1,8 +1,10 @@
 package hexlet.code.app.service.Impl;
 
+import hexlet.code.app.model.DTO.TaskDTO;
 import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
+import hexlet.code.app.util.TaskDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+
+    private final TaskDTOMapper taskDTOMapper;
 
     @Override
     public Task getTaskById(String id) {
@@ -36,7 +40,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(TaskDTO taskDTO) {
+        Task task = taskDTOMapper.taskDTOToTask(taskDTO);
 
         if (taskRepository.findByName(task.getName()).isPresent()
                 && taskRepository.findByTaskStatusId(task.getTaskStatus().getId()).isPresent()) {
@@ -50,7 +55,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTask(String id, Task task) {
+    public Task updateTask(String id, TaskDTO taskDTO) {
+        Task task = taskDTOMapper.taskDTOToTask(taskDTO);
+
         Task taskToUpdate = taskRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (taskToUpdate == null) {

@@ -1,7 +1,7 @@
 package hexlet.code.app.controller;
 
-import hexlet.code.app.model.AuthRequest;
-import hexlet.code.app.model.User;
+import hexlet.code.app.model.DTO.AuthRequestDTO;
+import hexlet.code.app.model.entity.User;
 import hexlet.code.app.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AuthController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<String> login(@RequestBody @Valid AuthRequestDTO request) {
 
         System.out.println(request.password());
         System.out.println(request.email());

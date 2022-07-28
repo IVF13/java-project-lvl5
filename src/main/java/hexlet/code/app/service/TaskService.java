@@ -1,6 +1,6 @@
 package hexlet.code.app.service;
 
-import hexlet.code.app.model.Task;
+import hexlet.code.app.model.entity.Task;
 
 import java.util.List;
 

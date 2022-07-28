@@ -1,6 +1,6 @@
 package hexlet.code.app.repository;
 
-import hexlet.code.app.model.TaskStatus;
+import hexlet.code.app.model.entity.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

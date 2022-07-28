@@ -3,8 +3,8 @@ package hexlet.code.app.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.configuration.SecurityConfiguration;
 import hexlet.code.app.configuration.SpringConfigTests;
-import hexlet.code.app.model.AuthRequest;
-import hexlet.code.app.model.User;
+import hexlet.code.app.model.DTO.AuthRequestDTO;
+import hexlet.code.app.model.entity.User;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -110,7 +110,7 @@ public class UserControllerTest {
     @Test
     public void loginTest() throws Exception {
         utils.regDefaultUser();
-        final AuthRequest loginDto = new AuthRequest(
+        final AuthRequestDTO loginDto = new AuthRequestDTO(
                 utils.getTestRegistrationUser().getEmail(),
                 utils.getTestRegistrationUser().getPassword()
         );
@@ -123,7 +123,7 @@ public class UserControllerTest {
 
     @Test
     public void loginFailTest() throws Exception {
-        final AuthRequest loginDto = new AuthRequest(
+        final AuthRequestDTO loginDto = new AuthRequestDTO(
                 utils.getTestRegistrationUser().getEmail(),
                 utils.getTestRegistrationUser().getPassword()
         );

@@ -1,7 +1,7 @@
 package hexlet.code.app.service;
 
-import hexlet.code.app.model.User;
-import hexlet.code.app.model.UserDTO;
+import hexlet.code.app.model.entity.User;
+import hexlet.code.app.model.DTO.UserDTO;
 
 import javax.management.relation.RelationException;
 import javax.naming.NoPermissionException;

@@ -1,7 +1,7 @@
 package hexlet.code.app.controller;
 
-import hexlet.code.app.model.User;
-import hexlet.code.app.model.UserDTO;
+import hexlet.code.app.model.entity.User;
+import hexlet.code.app.model.DTO.UserDTO;
 import hexlet.code.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

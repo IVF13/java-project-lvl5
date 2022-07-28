@@ -1,4 +1,4 @@
-package hexlet.code.app.model;
+package hexlet.code.app.model.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

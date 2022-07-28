@@ -1,6 +1,6 @@
 package hexlet.code.app.service.Impl;
 
-import hexlet.code.app.model.Task;
+import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import lombok.RequiredArgsConstructor;

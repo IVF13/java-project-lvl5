@@ -1,8 +1,8 @@
 package hexlet.code.app.service.Impl;
 
-import hexlet.code.app.model.Task;
-import hexlet.code.app.model.User;
-import hexlet.code.app.model.UserDTO;
+import hexlet.code.app.model.entity.Task;
+import hexlet.code.app.model.entity.User;
+import hexlet.code.app.model.DTO.UserDTO;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.UserService;
 import hexlet.code.app.util.UserDTOMapper;

@@ -1,7 +1,7 @@
 package hexlet.code.app.controller;
 
 
-import hexlet.code.app.model.TaskStatus;
+import hexlet.code.app.model.entity.TaskStatus;
 import hexlet.code.app.service.TaskStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

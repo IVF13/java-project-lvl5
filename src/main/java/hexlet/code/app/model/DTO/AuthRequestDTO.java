@@ -1,13 +1,13 @@
-package hexlet.code.app.model;
+package hexlet.code.app.model.DTO;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public record AuthRequest(
+public record AuthRequestDTO(
         @NotBlank @Email String email,
         @NotBlank String password) {
 
-    public AuthRequest() {
+    public AuthRequestDTO() {
         this(null, null);
     }
 }

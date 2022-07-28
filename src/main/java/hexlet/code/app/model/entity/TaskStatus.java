@@ -1,5 +1,6 @@
-package hexlet.code.app.model;
+package hexlet.code.app.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class TaskStatus {
     @Size(min = 1)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "taskStatus", fetch = FetchType.EAGER)
     private List<Task> tasks;
 

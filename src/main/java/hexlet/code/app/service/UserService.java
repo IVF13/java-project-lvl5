@@ -19,4 +19,6 @@ public interface UserService {
 
     String deleteUser(String id) throws NoPermissionException, RelationException;
 
+    User getCurrentUser();
+
 }

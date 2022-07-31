@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(imports = Task.class, componentModel = "spring")
 public interface TaskResponseDTOMapper {
 
-    TaskResponseDTO taskToTaskRequestDTO(Task task);
+    TaskResponseDTO taskToTaskResponseDTO(Task task);
 
 }

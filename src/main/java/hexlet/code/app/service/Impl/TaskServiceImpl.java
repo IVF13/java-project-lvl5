@@ -55,7 +55,7 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.save(task);
         task = taskRepository.findByName(task.getName()).get();
-        System.out.println("!!!!!!!!!!!!!!!!!!!" + task.getAuthor().getOwnedTasks());
+
         return taskResponseDTOMapper.taskToTaskResponseDTO(task);
     }
 

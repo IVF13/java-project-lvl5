@@ -1,6 +1,7 @@
 package hexlet.code.app.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "task_statuses")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class TaskStatus {
 
     @Id

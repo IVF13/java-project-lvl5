@@ -1,19 +1,19 @@
 package hexlet.code.app.service;
 
-import hexlet.code.app.model.DTO.TaskDTO;
-import hexlet.code.app.model.entity.Task;
+import hexlet.code.app.model.DTO.TaskRequestDTO;
+import hexlet.code.app.model.DTO.TaskResponseDTO;
 
 import java.util.List;
 
 public interface TaskService {
 
-    Task getTaskById(String id);
+    TaskResponseDTO getTaskById(String id);
 
-    List<Task> getAllTasks();
+    List<TaskResponseDTO> getAllTasks();
 
-    Task createTask(TaskDTO taskDTO);
+    TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO);
 
-    Task updateTask(String id, TaskDTO taskDTO);
+    TaskResponseDTO updateTask(String id, TaskRequestDTO taskRequestDTO);
 
     String deleteTask(String id);
 

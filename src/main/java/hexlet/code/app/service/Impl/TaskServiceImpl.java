@@ -1,10 +1,12 @@
 package hexlet.code.app.service.Impl;
 
-import hexlet.code.app.model.DTO.TaskDTO;
+import hexlet.code.app.model.DTO.TaskRequestDTO;
+import hexlet.code.app.model.DTO.TaskResponseDTO;
 import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
-import hexlet.code.app.util.TaskDTOMapper;
+import hexlet.code.app.util.TaskRequestDTOMapper;
+import hexlet.code.app.util.TaskResponseDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,27 +23,30 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
 
-    private final TaskDTOMapper taskDTOMapper;
+    private final TaskRequestDTOMapper taskRequestDTOMapper;
+
+    private final TaskResponseDTOMapper taskResponseDTOMapper;
 
     @Override
-    public Task getTaskById(String id) {
+    public TaskResponseDTO getTaskById(String id) {
         Task task = taskRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (task == null) {
             throw new NotFoundException("Task Not Found");
         }
 
-        return task;
+        return taskResponseDTOMapper.taskToTaskResponseDTO(task);
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<TaskResponseDTO> getAllTasks() {
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream().map(taskResponseDTOMapper::taskToTaskResponseDTO).toList();
     }
 
     @Override
-    public Task createTask(TaskDTO taskDTO) {
-        Task task = taskDTOMapper.taskDTOToTask(taskDTO);
+    public TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO) {
+        Task task = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
 
         if (taskRepository.findByName(task.getName()).isPresent()
                 && taskRepository.findByTaskStatusId(task.getTaskStatus().getId()).isPresent()) {
@@ -50,13 +55,13 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.save(task);
         task = taskRepository.findByName(task.getName()).get();
-
-        return task;
+        System.out.println("!!!!!!!!!!!!!!!!!!!" + task.getAuthor().getOwnedTasks());
+        return taskResponseDTOMapper.taskToTaskResponseDTO(task);
     }
 
     @Override
-    public Task updateTask(String id, TaskDTO taskDTO) {
-        Task task = taskDTOMapper.taskDTOToTask(taskDTO);
+    public TaskResponseDTO updateTask(String id, TaskRequestDTO taskRequestDTO) {
+        Task task = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
 
         Task taskToUpdate = taskRepository.findById(Long.parseLong(id)).orElse(null);
 
@@ -66,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
 
         taskToUpdate.setName(task.getName());
 
-        return taskRepository.save(taskToUpdate);
+        return taskResponseDTOMapper.taskToTaskResponseDTO(taskRepository.save(taskToUpdate));
     }
 
     @Override

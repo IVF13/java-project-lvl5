@@ -1,7 +1,7 @@
 package hexlet.code.app.controller;
 
-import hexlet.code.app.model.DTO.TaskDTO;
-import hexlet.code.app.model.entity.Task;
+import hexlet.code.app.model.DTO.TaskRequestDTO;
+import hexlet.code.app.model.DTO.TaskResponseDTO;
 import hexlet.code.app.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +28,26 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping(path = TASK_ID)
-    public ResponseEntity<Task> getTaskById(@PathVariable String id) {
-        Task task = taskService.getTaskById(id);
-        return ResponseEntity.ok().body(task);
+    public ResponseEntity<TaskResponseDTO> getTaskById(@PathVariable String id) {
+        TaskResponseDTO taskResponseDTO = taskService.getTaskById(id);
+        return ResponseEntity.ok().body(taskResponseDTO);
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok().body(tasks);
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks() {
+        List<TaskResponseDTO> taskResponseDTOS = taskService.getAllTasks();
+        return ResponseEntity.ok().body(taskResponseDTOS);
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<Task> createTask(@RequestBody @Valid TaskDTO taskDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskDTO));
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody @Valid TaskRequestDTO taskRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskRequestDTO));
     }
 
     @PutMapping(path = TASK_ID)
-    public ResponseEntity<Task> updateTask(@PathVariable String id,
-                                           @RequestBody @Valid TaskDTO taskDTO) {
-        Task updatedTask = taskService.updateTask(id, taskDTO);
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable String id,
+                                                      @RequestBody @Valid TaskRequestDTO taskRequestDTO) {
+        TaskResponseDTO updatedTask = taskService.updateTask(id, taskRequestDTO);
         return ResponseEntity.ok().body(updatedTask);
     }
 

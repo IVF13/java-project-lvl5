@@ -29,16 +29,16 @@ public class Task {
     private String description;
 
     @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.DETACH)
     @JoinColumn(name = "task_status_id")
     private TaskStatus taskStatus;
 
     @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "executor_id")
     private User executor;
 

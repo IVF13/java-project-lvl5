@@ -1,6 +1,6 @@
 package hexlet.code.app.util;
 
-import hexlet.code.app.model.DTO.TaskDTO;
+import hexlet.code.app.model.DTO.TaskRequestDTO;
 import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(imports = Task.class, componentModel = "spring")
-public abstract class TaskDTOMapper {
+public abstract class TaskRequestDTOMapper {
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
@@ -22,12 +22,12 @@ public abstract class TaskDTOMapper {
     @Autowired
     private UserService userService;
 
-    public abstract Task taskDTOToTask(TaskDTO taskDTO);
+    public abstract Task taskRequestDTOToTask(TaskRequestDTO taskRequestDTO);
 
     @AfterMapping
-    void taskDTOToTaskAddTask(@MappingTarget Task task, TaskDTO taskDTO) {
-        task.setTaskStatus(taskStatusRepository.getById(taskDTO.getTaskStatusId()));
-        task.setExecutor(userRepository.getById(taskDTO.getExecutorId()));
+    void taskRequestDTOToTask(@MappingTarget Task task, TaskRequestDTO taskRequestDTO) {
+        task.setTaskStatus(taskStatusRepository.getById(taskRequestDTO.getTaskStatusId()));
+        task.setExecutor(userRepository.getById(taskRequestDTO.getExecutorId()));
         task.setAuthor(userRepository.findById(userService.getCurrentUser().getId()).get());
     }
 

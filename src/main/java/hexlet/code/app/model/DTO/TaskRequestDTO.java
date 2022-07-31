@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDTO {
+public class TaskRequestDTO {
 
     @Size(min = 1)
     private String name;

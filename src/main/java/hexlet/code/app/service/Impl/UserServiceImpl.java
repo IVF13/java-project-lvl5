@@ -81,7 +81,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
 
-        return userDTOMapper.userToUserDTO(userRepository.save(userToUpdate));
+        userRepository.save(userToUpdate);
+        user = userRepository.findByEmail(user.getEmail()).get();
+
+        return userDTOMapper.userToUserDTO(user);
     }
 
     @Override

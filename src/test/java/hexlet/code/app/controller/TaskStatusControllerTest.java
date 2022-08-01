@@ -110,9 +110,10 @@ public class TaskStatusControllerTest {
         utils.createDefaultTaskStatus();
 
         User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
+        TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
 
         final var response1 = utils.perform(
-                        get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1),
+                        get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId()),
                         existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -125,7 +126,7 @@ public class TaskStatusControllerTest {
         assertEquals(taskStatus1.getName(), TEST_TASK_STATUS_NAME);
 
         final var response2 = utils.perform(
-                        put(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1)
+                        put(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId())
                                 .content(asJson(new TaskStatus("newName")))
                                 .contentType(APPLICATION_JSON),
                         existsUser

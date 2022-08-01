@@ -27,7 +27,9 @@ public abstract class TaskRequestDTOMapper {
     @AfterMapping
     void taskRequestDTOToTask(@MappingTarget Task task, TaskRequestDTO taskRequestDTO) {
         task.setTaskStatus(taskStatusRepository.getById(taskRequestDTO.getTaskStatusId()));
-        task.setExecutor(userRepository.getById(taskRequestDTO.getExecutorId()));
+        if (taskRequestDTO.getExecutorId() != null) {
+            task.setExecutor(userRepository.getById(taskRequestDTO.getExecutorId()));
+        }
         task.setAuthor(userRepository.findById(userService.getCurrentUser().getId()).get());
     }
 

@@ -66,8 +66,8 @@ public class TaskStatusControllerTest {
         final TaskStatus taskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(taskStatus.getId(), existsTaskStatus.getId());
-        assertEquals(taskStatus.getName(), "testTaskStatusName");
+        assertEquals(existsTaskStatus.getId(), taskStatus.getId());
+        assertEquals("testTaskStatusName", taskStatus.getName());
     }
 
     @Test
@@ -90,11 +90,11 @@ public class TaskStatusControllerTest {
         final List<TaskStatus> taskStatuses = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(taskStatuses.size(), 4);
-        assertEquals(taskStatuses.get(0).getName(), "new");
-        assertEquals(taskStatuses.get(1).getName(), "one");
-        assertEquals(taskStatuses.get(2).getName(), "task");
-        assertEquals(taskStatuses.get(3).getName(), "status");
+        assertEquals(4, taskStatuses.size());
+        assertEquals("new", taskStatuses.get(0).getName());
+        assertEquals("one", taskStatuses.get(1).getName());
+        assertEquals("task", taskStatuses.get(2).getName());
+        assertEquals("status", taskStatuses.get(3).getName());
     }
 
     @Test
@@ -110,9 +110,10 @@ public class TaskStatusControllerTest {
         utils.createDefaultTaskStatus();
 
         User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
+        TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
 
         final var response1 = utils.perform(
-                        get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1),
+                        get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId()),
                         existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -121,11 +122,11 @@ public class TaskStatusControllerTest {
         final TaskStatus taskStatus1 = fromJson(response1.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(taskStatus1.getId(), 1);
-        assertEquals(taskStatus1.getName(), TEST_TASK_STATUS_NAME);
+        assertEquals(existsTaskStatus.getId(), taskStatus1.getId());
+        assertEquals(TEST_TASK_STATUS_NAME, taskStatus1.getName());
 
         final var response2 = utils.perform(
-                        put(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1)
+                        put(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId())
                                 .content(asJson(new TaskStatus("newName")))
                                 .contentType(APPLICATION_JSON),
                         existsUser
@@ -136,8 +137,8 @@ public class TaskStatusControllerTest {
         final TaskStatus taskStatus2 = fromJson(response2.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(taskStatus2.getId(), 1);
-        assertEquals(taskStatus2.getName(), "newName");
+        assertEquals(existsTaskStatus.getId(), taskStatus2.getId());
+        assertEquals("newName", taskStatus2.getName());
     }
 
     @Test

@@ -6,6 +6,7 @@ import hexlet.code.app.configuration.SpringConfigTests;
 import hexlet.code.app.model.entity.TaskStatus;
 import hexlet.code.app.model.entity.User;
 import hexlet.code.app.repository.TaskStatusRepository;
+import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +37,11 @@ public class TaskStatusControllerTest {
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private TestUtils utils;
+
 
     @AfterEach
     public void clear() {
@@ -47,15 +50,15 @@ public class TaskStatusControllerTest {
 
     @Test
     public void getTaskStatusByIdTest() throws Exception {
-        User user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
-        utils.regUser(user);
+        utils.regDefaultUser();
         utils.createDefaultTaskStatus();
 
-        TaskStatus existsTaskStatus = taskStatusRepository.findByName("testTaskStatusName").get();
+        User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
+        TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
 
         final var response = utils.perform(
                         get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId()),
-                        user
+                        existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -69,8 +72,8 @@ public class TaskStatusControllerTest {
 
     @Test
     public void getAllTaskStatusesTest() throws Exception {
-        User user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
-        utils.regUser(user);
+        utils.regDefaultUser();
+        User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
 
         utils.createTaskStatus(new TaskStatus("new"));
         utils.createTaskStatus(new TaskStatus("one"));
@@ -79,7 +82,7 @@ public class TaskStatusControllerTest {
 
         final var response = utils.perform(
                         get(TASK_STATUS_CONTROLLER_PATH),
-                        user
+                        existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -103,14 +106,14 @@ public class TaskStatusControllerTest {
 
     @Test
     public void updateTaskStatusTest() throws Exception {
-        User user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
-        utils.regUser(user);
+        utils.regDefaultUser();
+        utils.createDefaultTaskStatus();
 
-        utils.createTaskStatus(new TaskStatus("new"));
+        User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
 
         final var response1 = utils.perform(
                         get(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1),
-                        user
+                        existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -119,13 +122,13 @@ public class TaskStatusControllerTest {
         });
 
         assertEquals(taskStatus1.getId(), 1);
-        assertEquals(taskStatus1.getName(), "new");
+        assertEquals(taskStatus1.getName(), TEST_TASK_STATUS_NAME);
 
         final var response2 = utils.perform(
                         put(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, 1)
                                 .content(asJson(new TaskStatus("newName")))
                                 .contentType(APPLICATION_JSON),
-                        user
+                        existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -139,18 +142,17 @@ public class TaskStatusControllerTest {
 
     @Test
     public void deleteTaskStatusTest() throws Exception {
-        User user = new User("new name", "new last name", TEST_USERNAME_2, "new pwd");
-        utils.regUser(user);
+        utils.regDefaultUser();
+        utils.createDefaultTaskStatus();
 
-        utils.createTaskStatus(new TaskStatus("new"));
-        TaskStatus existsTaskStatus = taskStatusRepository.findByName("new").get();
+        User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
+        TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
 
         assertEquals(1, taskStatusRepository.count());
 
-        final var response1 = utils.perform(
-                        delete(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId()),
-                        user
-                ).andExpect(status().isOk())
+        utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + TASK_STATUS_ID, existsTaskStatus.getId()),
+                        existsUser)
+                .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 

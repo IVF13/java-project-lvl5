@@ -3,8 +3,10 @@ package hexlet.code.app.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.app.model.DTO.TaskRequestDTO;
 import hexlet.code.app.model.entity.TaskStatus;
 import hexlet.code.app.model.entity.User;
+import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.util.JwtTokenUtil;
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -25,6 +28,7 @@ public class TestUtils {
 
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME_2 = "email2@email.com";
+    public static final String TEST_TASK_STATUS_NAME = "testTaskStatusName";
 
     private final User testRegistrationUser = new User(
             "fname",
@@ -33,7 +37,7 @@ public class TestUtils {
             "pwd"
     );
 
-    private final TaskStatus testCreationTaskStatus = new TaskStatus("testTaskStatusName");
+    private final TaskStatus testCreationTaskStatus = new TaskStatus(TEST_TASK_STATUS_NAME);
 
     public User getTestRegistrationUser() {
         return testRegistrationUser;
@@ -49,13 +53,18 @@ public class TestUtils {
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-
     public void tearDown() {
+        taskRepository.deleteAll();
+        taskRepository.flush();
         taskStatusRepository.deleteAll();
         taskStatusRepository.flush();
         userRepository.deleteAll();
+        userRepository.flush();
     }
 
     public User getUserByEmail(final String email) {
@@ -82,6 +91,13 @@ public class TestUtils {
                 .content(asJson(taskStatus))
                 .contentType(APPLICATION_JSON);
         return perform(request);
+    }
+
+    public ResultActions createTask(final TaskRequestDTO taskRequestDTO, User author) throws Exception {
+        final var request = post(TASK_CONTROLLER_PATH)
+                .content(asJson(taskRequestDTO))
+                .contentType(APPLICATION_JSON);
+        return perform(request, author);
     }
 
     public ResultActions perform(final MockHttpServletRequestBuilder request, final User user) throws Exception {

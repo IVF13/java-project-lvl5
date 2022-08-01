@@ -71,9 +71,7 @@ public class TaskServiceImpl implements TaskService {
 
         taskToUpdate.setName(task.getName());
         taskToUpdate.setDescription(task.getDescription());
-        if (task.getExecutor() != null) {
-            taskToUpdate.setExecutor(task.getExecutor());
-        }
+        taskToUpdate.setExecutor(task.getExecutor());
         taskToUpdate.setTaskStatus(task.getTaskStatus());
 
         taskRepository.save(taskToUpdate);

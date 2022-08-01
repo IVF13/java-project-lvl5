@@ -43,7 +43,7 @@ public class TaskStatus {
 
     @Override
     public String toString() {
-        return "TaskStatus{" +
+        return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createdAt=" + createdAt +

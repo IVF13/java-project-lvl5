@@ -41,4 +41,13 @@ public class TaskStatus {
         this.name = taskStatusName;
     }
 
+    @Override
+    public String toString() {
+        return "TaskStatus{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
 }

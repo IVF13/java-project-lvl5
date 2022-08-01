@@ -98,13 +98,13 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
+        return "{"
+                + "id=" + id
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", email='" + email + '\''
+                + ", createdAt=" + createdAt
+                + '}';
     }
 
 }

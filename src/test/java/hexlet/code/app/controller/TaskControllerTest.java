@@ -40,9 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TaskControllerTest {
 
     @Autowired
-    TaskRepository taskRepository;
+    private TaskRepository taskRepository;
     @Autowired
-    TaskStatusRepository taskStatusRepository;
+    private TaskStatusRepository taskStatusRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired

@@ -27,7 +27,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         TaskStatus taskStatus = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
 
         if (taskStatus == null) {
-            throw new NotFoundException("Task status Not Found");
+            throw new NotFoundException("Task Status Not Found");
         }
 
         return taskStatus;
@@ -61,7 +61,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         taskStatusToUpdate.setName(taskStatus.getName());
 
         taskStatusRepository.save(taskStatusToUpdate);
-        taskStatus = taskStatusRepository.findByName(taskStatusToUpdate.getName()).get();
+        taskStatus = taskStatusRepository.findById(Long.parseLong(id)).get();
 
         return taskStatus;
     }

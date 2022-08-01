@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userToUpdate.setLastName(user.getLastName());
 
         userRepository.save(userToUpdate);
-        user = userRepository.findByEmail(user.getEmail()).get();
+        user = userRepository.findById(Long.parseLong(id)).get();
 
         return userDTOMapper.userToUserDTO(user);
     }

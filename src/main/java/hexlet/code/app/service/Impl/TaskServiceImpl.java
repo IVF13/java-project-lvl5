@@ -75,7 +75,7 @@ public class TaskServiceImpl implements TaskService {
         taskToUpdate.setTaskStatus(task.getTaskStatus());
 
         taskRepository.save(taskToUpdate);
-        task = taskRepository.findByName(task.getName()).get();
+        task = taskRepository.findById(Long.parseLong(id)).get();
 
         return taskResponseDTOMapper.taskToTaskResponseDTO(task);
     }

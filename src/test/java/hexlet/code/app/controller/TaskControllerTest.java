@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.configuration.SecurityConfiguration;
 import hexlet.code.app.configuration.SpringConfigTests;
 import hexlet.code.app.model.DTO.TaskRequestDTO;
+import hexlet.code.app.model.entity.Label;
 import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.model.entity.TaskStatus;
 import hexlet.code.app.model.entity.User;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -43,6 +45,8 @@ public class TaskControllerTest {
     private TaskRepository taskRepository;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
+    @Autowired
+    private LabelRepository labelRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -131,12 +135,14 @@ public class TaskControllerTest {
     public void updateTaskTest() throws Exception {
         utils.regDefaultUser();
         utils.createDefaultTaskStatus();
+        utils.createDefaultLabel();
 
         User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
         TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
+        Label existsLabel = labelRepository.findByName(TEST_LABEL_NAME).get();
 
         utils.createTask(new TaskRequestDTO("taskName", "taskDescription",
-                existsUser.getId(), existsTaskStatus.getId()), existsUser);
+                existsUser.getId(), List.of(existsLabel.getId()), existsTaskStatus.getId()), existsUser);
         Task existsTask = taskRepository.findByName("taskName").get();
 
         final var response = utils.perform(
@@ -153,16 +159,19 @@ public class TaskControllerTest {
         assertEquals(task.getDescription(), "taskDescription");
         assertEquals(task.getExecutor().getId(), existsUser.getId());
         assertEquals(task.getTaskStatus().getId(), existsTaskStatus.getId());
-
+        assertEquals(task.getLabels().get(0).getName(), existsLabel.getName());
 
         utils.createTaskStatus(new TaskStatus("anotherTaskStatus"));
         TaskStatus anotherExistsTaskStatus = taskStatusRepository.findByName("anotherTaskStatus").get();
+        utils.createLabel(new Label("anotherLabel"));
+        Label anotherExistsLabel = labelRepository.findByName("anotherLabel").get();
 
         final var response2 = utils.perform(
                         put(TASK_CONTROLLER_PATH + TASK_ID, task.getId())
                                 .content(asJson(
                                         new TaskRequestDTO("taskNameUpdated", "taskDescriptionUpdated",
-                                                null, anotherExistsTaskStatus.getId())))
+                                                null, List.of(existsLabel.getId(), anotherExistsLabel.getId()),
+                                                anotherExistsTaskStatus.getId())))
                                 .contentType(APPLICATION_JSON), existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -176,6 +185,8 @@ public class TaskControllerTest {
         assertEquals(task2.getDescription(), "taskDescriptionUpdated");
         assertNull(task2.getExecutor());
         assertEquals(task2.getTaskStatus().getId(), anotherExistsTaskStatus.getId());
+        assertEquals(task2.getLabels().get(0).getName(), existsLabel.getName());
+        assertEquals(task2.getLabels().get(1).getName(), anotherExistsLabel.getName());
     }
 
     @Test

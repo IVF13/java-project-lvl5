@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.model.DTO.TaskRequestDTO;
+import hexlet.code.app.model.entity.Label;
 import hexlet.code.app.model.entity.TaskStatus;
 import hexlet.code.app.model.entity.User;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
@@ -29,15 +32,15 @@ public class TestUtils {
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME_2 = "email2@email.com";
     public static final String TEST_TASK_STATUS_NAME = "testTaskStatusName";
-
+    public static final String TEST_LABEL_NAME = "testLabelName";
     private final User testRegistrationUser = new User(
             "fname",
             "lname",
             TEST_USERNAME,
             "pwd"
     );
-
     private final TaskStatus testCreationTaskStatus = new TaskStatus(TEST_TASK_STATUS_NAME);
+    private final Label testCreationLabel = new Label(TEST_LABEL_NAME);
 
     public User getTestRegistrationUser() {
         return testRegistrationUser;
@@ -45,16 +48,14 @@ public class TestUtils {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TaskStatusRepository taskStatusRepository;
-
+    @Autowired
+    private LabelRepository labelRepository;
     @Autowired
     private TaskRepository taskRepository;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -63,6 +64,8 @@ public class TestUtils {
         taskRepository.flush();
         taskStatusRepository.deleteAll();
         taskStatusRepository.flush();
+        labelRepository.deleteAll();
+        labelRepository.flush();
         userRepository.deleteAll();
         userRepository.flush();
     }
@@ -79,6 +82,10 @@ public class TestUtils {
         return createTaskStatus(testCreationTaskStatus);
     }
 
+    public ResultActions createDefaultLabel() throws Exception {
+        return createLabel(testCreationLabel);
+    }
+
     public ResultActions regUser(final User user) throws Exception {
         final var request = post(USER_CONTROLLER_PATH)
                 .content(asJson(user))
@@ -89,6 +96,13 @@ public class TestUtils {
     public ResultActions createTaskStatus(final TaskStatus taskStatus) throws Exception {
         final var request = post(TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(taskStatus))
+                .contentType(APPLICATION_JSON);
+        return perform(request);
+    }
+
+    public ResultActions createLabel(final Label label) throws Exception {
+        final var request = post(LABEL_CONTROLLER_PATH)
+                .content(asJson(label))
                 .contentType(APPLICATION_JSON);
         return perform(request);
     }

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -41,6 +42,12 @@ public class Task {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "executor_id")
     private User executor;
+
+    @ManyToMany
+    @JoinTable(name = "task_label",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private List<Label> labels;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

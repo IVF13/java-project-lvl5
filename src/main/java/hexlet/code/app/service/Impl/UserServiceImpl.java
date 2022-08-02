@@ -67,24 +67,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO updateUser(String id, User user) throws NoPermissionException {
+    public UserDTO updateUser(String id, User updatedUser) throws NoPermissionException {
         checkIdentityPermissions(id);
 
-        User userToUpdate = userRepository.findById(Long.parseLong(id)).orElse(null);
+        User existsUser = userRepository.findById(Long.parseLong(id)).orElse(null);
 
-        if (userToUpdate == null) {
+        if (existsUser == null) {
             throw new NotFoundException("User Not Found");
         }
+        updatedUser.setId(existsUser.getId());
+        updatedUser.setCreatedAt(existsUser.getCreatedAt());
 
-        userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-        userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setFirstName(user.getFirstName());
-        userToUpdate.setLastName(user.getLastName());
+        userRepository.save(updatedUser);
+        updatedUser = userRepository.findById(Long.parseLong(id)).get();
 
-        userRepository.save(userToUpdate);
-        user = userRepository.findByEmail(user.getEmail()).get();
-
-        return userDTOMapper.userToUserDTO(user);
+        return userDTOMapper.userToUserDTO(updatedUser);
     }
 
     @Override

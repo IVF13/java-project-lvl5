@@ -2,7 +2,11 @@ package hexlet.code.app.service.Impl;
 
 import hexlet.code.app.model.DTO.TaskRequestDTO;
 import hexlet.code.app.model.DTO.TaskResponseDTO;
+import hexlet.code.app.model.entity.Label;
+import hexlet.code.app.model.entity.QTask;
 import hexlet.code.app.model.entity.Task;
+import hexlet.code.app.model.entity.TaskStatus;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import hexlet.code.app.util.TaskRequestDTOMapper;
@@ -14,7 +18,9 @@ import org.webjars.NotFoundException;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
+
 import java.util.List;
+
 
 @Service
 @Transactional
@@ -22,6 +28,8 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+
+    private final LabelRepository labelRepository;
 
     private final TaskRequestDTOMapper taskRequestDTOMapper;
 
@@ -39,8 +47,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDTO> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
+    public List<TaskResponseDTO> getAllTasks(TaskStatus taskStatus, Long executorId,
+                                             Long labels, Long authorId) {
+        Label existingLabel= new Label();
+
+        if(labels != null) {
+            existingLabel = labelRepository.findById(labels).get();
+        }
+
+        List<Task> tasks = (List<Task>) taskRepository.findAll(QTask.task.taskStatus.id.eq(taskStatus.getId())
+                .and(QTask.task.executor.id.eq(executorId))
+                .and(QTask.task.labels.any().eq(existingLabel))
+                .and(QTask.task.author.id.eq(authorId)));
         return tasks.stream().map(taskResponseDTOMapper::taskToTaskResponseDTO).toList();
     }
 

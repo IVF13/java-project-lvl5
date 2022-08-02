@@ -50,19 +50,19 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Label updateLabel(String id, Label label) {
-        Label labelToUpdate = labelRepository.findById(Long.parseLong(id)).orElse(null);
+    public Label updateLabel(String id, Label updatedLabel) {
+        Label existsLabel = labelRepository.findById(Long.parseLong(id)).orElse(null);
 
-        if (labelToUpdate == null) {
+        if (existsLabel == null) {
             throw new NotFoundException("Label Not Found");
         }
+        updatedLabel.setId(existsLabel.getId());
+        updatedLabel.setCreatedAt(existsLabel.getCreatedAt());
 
-        labelToUpdate.setName(label.getName());
+        labelRepository.save(updatedLabel);
+        updatedLabel = labelRepository.findById(Long.parseLong(id)).get();
 
-        labelRepository.save(labelToUpdate);
-        label = labelRepository.findById(Long.parseLong(id)).get();
-
-        return label;
+        return updatedLabel;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package hexlet.code.app.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +43,6 @@ public class Task {
     @JoinColumn(name = "executor_id")
     private User executor;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "task_label",
             joinColumns = @JoinColumn(name = "task_id"),

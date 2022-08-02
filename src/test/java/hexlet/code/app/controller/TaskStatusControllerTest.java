@@ -100,7 +100,7 @@ public class TaskStatusControllerTest {
     @Test
     public void createTaskStatusTest() throws Exception {
         assertEquals(0, taskStatusRepository.count());
-        utils.createTaskStatus(new TaskStatus("new"));
+        utils.createDefaultTaskStatus();
         assertEquals(1, taskStatusRepository.count());
     }
 

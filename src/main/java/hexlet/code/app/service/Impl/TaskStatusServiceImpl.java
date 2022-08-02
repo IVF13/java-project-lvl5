@@ -51,19 +51,19 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     }
 
     @Override
-    public TaskStatus updateTaskStatus(String id, TaskStatus taskStatus) {
-        TaskStatus taskStatusToUpdate = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
+    public TaskStatus updateTaskStatus(String id, TaskStatus updatedTaskStatus) {
+        TaskStatus existsTaskStatus = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
 
-        if (taskStatusToUpdate == null) {
+        if (existsTaskStatus == null) {
             throw new NotFoundException("Task Status Not Found");
         }
+        updatedTaskStatus.setId(existsTaskStatus.getId());
+        updatedTaskStatus.setCreatedAt(existsTaskStatus.getCreatedAt());
 
-        taskStatusToUpdate.setName(taskStatus.getName());
+        taskStatusRepository.save(updatedTaskStatus);
+        updatedTaskStatus = taskStatusRepository.findById(Long.parseLong(id)).get();
 
-        taskStatusRepository.save(taskStatusToUpdate);
-        taskStatus = taskStatusRepository.findById(Long.parseLong(id)).get();
-
-        return taskStatus;
+        return updatedTaskStatus;
     }
 
     @Override

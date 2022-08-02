@@ -61,23 +61,19 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDTO updateTask(String id, TaskRequestDTO taskRequestDTO) {
-        Task task = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
+        Task updatedTask = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
+        Task existsTask = taskRepository.findById(Long.parseLong(id)).orElse(null);
 
-        Task taskToUpdate = taskRepository.findById(Long.parseLong(id)).orElse(null);
-
-        if (taskToUpdate == null) {
+        if (existsTask == null) {
             throw new NotFoundException("Task Not Found");
         }
+        updatedTask.setId(existsTask.getId());
+        updatedTask.setCreatedAt(existsTask.getCreatedAt());
 
-        taskToUpdate.setName(task.getName());
-        taskToUpdate.setDescription(task.getDescription());
-        taskToUpdate.setExecutor(task.getExecutor());
-        taskToUpdate.setTaskStatus(task.getTaskStatus());
+        taskRepository.save(updatedTask);
+        updatedTask = taskRepository.findById(Long.parseLong(id)).get();
 
-        taskRepository.save(taskToUpdate);
-        task = taskRepository.findById(Long.parseLong(id)).get();
-
-        return taskResponseDTOMapper.taskToTaskResponseDTO(task);
+        return taskResponseDTOMapper.taskToTaskResponseDTO(updatedTask);
     }
 
     @Override

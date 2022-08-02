@@ -39,7 +39,7 @@ public abstract class TaskRequestDTOMapper {
             task.setExecutor(userRepository.getById(taskRequestDTO.getExecutorId()));
         }
 
-        if (taskRequestDTO.getLabelIds() != null || !taskRequestDTO.getLabelIds().isEmpty()) {
+        if (taskRequestDTO.getLabelIds() != null) {
             task.setLabels(taskRequestDTO.getLabelIds().stream().map(x -> {
                         if (labelRepository.findById(x).isPresent()) {
                             return labelRepository.findById(x).get();

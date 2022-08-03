@@ -13,8 +13,6 @@ import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
-import liquibase.pro.packaged.L;
-import liquibase.pro.packaged.U;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -133,7 +131,8 @@ public class TaskControllerTest {
 
         final var response2 = utils.perform(
                         get(TASK_CONTROLLER_PATH + "?taskStatus=" + existsTaskStatus.getId() + "&executorId="
-                                + existsUser.getId() + "&labels=" + existsLabel.getId() + "&authorId=" + existsUser.getId())
+                                + existsUser.getId() + "&labels=" + existsLabel.getId()
+                                + "&authorId=" + existsUser.getId())
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();

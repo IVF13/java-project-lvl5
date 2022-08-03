@@ -82,7 +82,7 @@ public class UserControllerTest {
         final User anotherUser = userRepository.findAll().get(1);
 
         utils.perform(get(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, expectedUser.getId()), anotherUser)
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isLocked());
     }
 
     @Test
@@ -181,7 +181,7 @@ public class UserControllerTest {
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
 
         utils.perform(delete(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId), user)
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isLocked());
 
         assertEquals(2, userRepository.count());
     }

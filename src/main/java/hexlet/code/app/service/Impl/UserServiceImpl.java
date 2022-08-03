@@ -91,10 +91,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!userRepository.existsById(Long.parseLong(id))) {
             throw new NotFoundException("User Not Found");
         } else {
-            List<Task> ownedTasks = userRepository.findById(Long.parseLong(id)).get().getOwnedTasks();
+            User user = userRepository.findById(Long.parseLong(id)).get();
+            List<Task> ownedTasks = user.getOwnedTasks();
+            List<Task> claimedTasks = user.getClaimedTasks();
 
-            if (!ownedTasks.isEmpty()) {
-                throw new RelationException("User have owned tasks, unable to delete");
+            if (!ownedTasks.isEmpty() || !claimedTasks.isEmpty()) {
+                throw new RelationException("User have related tasks, unable to delete");
             }
 
             userRepository.deleteById(Long.parseLong(id));

@@ -28,7 +28,7 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(NoPermissionException.class)
     public ResponseEntity<String> handleNoPermissionException(NoPermissionException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.LOCKED);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(EntityExistsException.class)

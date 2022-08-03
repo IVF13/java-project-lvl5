@@ -55,7 +55,8 @@ public class TaskStatusControllerTest {
         TaskStatus existsTaskStatus = taskStatusRepository.findByName(TestUtils.TEST_TASK_STATUS_NAME).get();
 
         final var response = utils.perform(
-                        MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
+                        MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH
+                                + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
                         existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -111,7 +112,8 @@ public class TaskStatusControllerTest {
         TaskStatus existsTaskStatus = taskStatusRepository.findByName(TestUtils.TEST_TASK_STATUS_NAME).get();
 
         final var response1 = utils.perform(
-                        MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
+                        MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH
+                                + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
                         existsUser
                 ).andExpect(status().isOk())
                 .andReturn()
@@ -124,7 +126,8 @@ public class TaskStatusControllerTest {
         Assertions.assertEquals(TestUtils.TEST_TASK_STATUS_NAME, taskStatus1.getName());
 
         final var response2 = utils.perform(
-                        MockMvcRequestBuilders.put(TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId())
+                        MockMvcRequestBuilders.put(TaskStatusController.TASK_STATUS_CONTROLLER_PATH
+                                        + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId())
                                 .content(TestUtils.asJson(new TaskStatus("newName")))
                                 .contentType(APPLICATION_JSON),
                         existsUser
@@ -149,7 +152,8 @@ public class TaskStatusControllerTest {
 
         assertEquals(1, taskStatusRepository.count());
 
-        utils.perform(MockMvcRequestBuilders.delete(TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
+        utils.perform(MockMvcRequestBuilders.delete(TaskStatusController.TASK_STATUS_CONTROLLER_PATH
+                                + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId()),
                         existsUser)
                 .andExpect(status().isOk())
                 .andReturn()

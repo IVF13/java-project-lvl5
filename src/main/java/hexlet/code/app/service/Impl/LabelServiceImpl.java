@@ -75,7 +75,7 @@ public class LabelServiceImpl implements LabelService {
             List<Task> tasks = labelRepository.findById(Long.parseLong(id)).get().getTasks();
 
             if (!tasks.isEmpty()) {
-                throw new RelationException("Label have assigned tasks, unable to delete");
+                throw new RelationException("Label have related tasks, unable to delete");
             }
 
             labelRepository.deleteById(Long.parseLong(id));

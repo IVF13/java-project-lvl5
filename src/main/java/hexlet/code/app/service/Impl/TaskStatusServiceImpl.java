@@ -76,7 +76,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
             List<Task> tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
 
             if (!tasks.isEmpty()) {
-                throw new RelationException("Task status have assigned tasks, unable to delete");
+                throw new RelationException("Task status have related tasks, unable to delete");
             }
 
             taskStatusRepository.deleteById(Long.parseLong(id));

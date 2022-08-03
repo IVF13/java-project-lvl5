@@ -45,7 +45,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/login", POST.toString()),
             new AntPathRequestMatcher("/api/users", POST.toString()),
             new AntPathRequestMatcher("/api/users", GET.toString()),
-            new AntPathRequestMatcher("/api/statuses/**", GET.toString()),
             new NegatedRequestMatcher(new AntPathRequestMatcher("/api/**"))
     );
 

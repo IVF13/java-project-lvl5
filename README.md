@@ -15,6 +15,6 @@ The demonstration and documentation pages of this project is deployed to Heroku 
 1. Clone this repository to your machine by ```$git clone https://github.com/IVF13/java-project-lvl5``` or by your IDE features.
 2. Do install by ```$make install```
 3. Run it by ```$make run-dist```
-4. Open app on [localhost:5000](http://localhost:5000/login) address  
+4. Open app on [localhost:5000/login](http://localhost:5000/login) address  
 
 Also you can run it by your IDE just by running the App class.  

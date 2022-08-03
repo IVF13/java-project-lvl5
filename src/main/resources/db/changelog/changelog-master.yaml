@@ -1,0 +1,178 @@
+databaseChangeLog:
+  changeSet:
+    -
+      createTable:
+        column:
+          -
+      constraints:
+        _nullable: false
+        _name: task_id
+        _type: BIGINT
+        -
+      constraints:
+        _nullable: false
+        _name: label_id
+        _type: BIGINT
+        _tableName: task_label
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-1"
+    -
+      createTable:
+        column:
+          -
+      constraints:
+        _nullable: false
+        _primaryKey: true
+        _primaryKeyName: task_statusesPK
+        _autoIncrement: true
+        _name: id
+        _type: BIGINT
+        -
+      _name: created_at
+        _type: TIMESTAMP
+        -
+      _name: name
+        _type: "VARCHAR(255)"
+        _tableName: task_statuses
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-2"
+    -
+      createTable:
+        column:
+          -
+      constraints:
+        _nullable: false
+        _primaryKey: true
+        _primaryKeyName: tasksPK
+        _autoIncrement: true
+        _name: id
+        _type: BIGINT
+        -
+      _name: created_at
+        _type: TIMESTAMP
+        -
+      _name: description
+        _type: "VARCHAR(255)"
+        -
+      _name: name
+        _type: "VARCHAR(255)"
+        -
+      constraints:
+        _nullable: false
+        _name: user_id
+        _type: BIGINT
+        -
+      _name: executor_id
+        _type: BIGINT
+        -
+      constraints:
+        _nullable: false
+        _name: task_status_id
+        _type: BIGINT
+        _tableName: tasks
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-3"
+    -
+      createTable:
+        column:
+          -
+      constraints:
+        _nullable: false
+        _primaryKey: true
+        _primaryKeyName: usersPK
+        _autoIncrement: true
+        _name: id
+        _type: BIGINT
+        -
+      _name: created_at
+        _type: TIMESTAMP
+        -
+      _name: email
+        _type: "VARCHAR(255)"
+        -
+      _name: executor_id
+        _type: BIGINT
+        -
+      _name: first_name
+        _type: "VARCHAR(255)"
+        -
+      _name: last_name
+        _type: "VARCHAR(255)"
+        -
+      _name: password
+        _type: "VARCHAR(255)"
+        _tableName: users
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-4"
+    -
+      addUniqueConstraint:
+        _columnNames: email
+        _constraintName: UC_USERSEMAIL_COL
+        _tableName: users
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-5"
+    -
+      addForeignKeyConstraint:
+        _baseColumnNames: task_id
+        _baseTableName: task_label
+        _constraintName: FK45j1msvaecla2batb854mv44o
+        _deferrable: false
+        _initiallyDeferred: false
+        _referencedColumnNames: id
+        _referencedTableName: tasks
+        _validate: true
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-6"
+    -
+      addForeignKeyConstraint:
+        _baseColumnNames: label_id
+        _baseTableName: task_label
+        _constraintName: FK4vxcl7v2rqfurfbffjlbnndyv
+        _deferrable: false
+        _initiallyDeferred: false
+        _referencedColumnNames: id
+        _referencedTableName: task_statuses
+        _validate: true
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-7"
+    -
+      addForeignKeyConstraint:
+        _baseColumnNames: user_id
+        _baseTableName: tasks
+        _constraintName: FK6s1ob9k4ihi75xbxe2w0ylsdh
+        _deferrable: false
+        _initiallyDeferred: false
+        _referencedColumnNames: id
+        _referencedTableName: users
+        _validate: true
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-8"
+    -
+      addForeignKeyConstraint:
+        _baseColumnNames: task_status_id
+        _baseTableName: tasks
+        _constraintName: FK7xndk7y2uk29wdu734xyutbqe
+        _deferrable: false
+        _initiallyDeferred: false
+        _referencedColumnNames: id
+        _referencedTableName: task_statuses
+        _validate: true
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-9"
+    -
+      addForeignKeyConstraint:
+        _baseColumnNames: executor_id
+        _baseTableName: tasks
+        _constraintName: FKbrg922bkqn5m7212jsqjg6ioe
+        _deferrable: false
+        _initiallyDeferred: false
+        _referencedColumnNames: id
+        _referencedTableName: users
+        _validate: true
+      _author: "Ivan Gordienko (generated)"
+      _id: "1659375263964-10"
+  _xmlns: "http://www.liquibase.org/xml/ns/dbchangelog"
+  "_xmlns:ext": "http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  "_xmlns:pro": "http://www.liquibase.org/xml/ns/pro"
+  "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+  "_xsi:schemaLocation": "http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"

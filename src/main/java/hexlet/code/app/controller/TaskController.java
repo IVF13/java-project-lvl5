@@ -1,12 +1,13 @@
 package hexlet.code.app.controller;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.app.model.DTO.TaskRequestDTO;
 import hexlet.code.app.model.DTO.TaskResponseDTO;
-import hexlet.code.app.model.entity.TaskStatus;
+import hexlet.code.app.model.entity.Task;
 import hexlet.code.app.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 
@@ -36,11 +38,9 @@ public class TaskController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<List<TaskResponseDTO>> getAllTasks(@Param("taskStatus") TaskStatus taskStatus,
-                                                             @Param("executorId") Long executorId,
-                                                             @Param("labels") Long labels,
-                                                             @Param("authorId") Long authorId) {
-        List<TaskResponseDTO> taskResponseDTOS = taskService.getAllTasks(taskStatus, executorId, labels, authorId);
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks
+            (@QuerydslPredicate(root = Task.class) Predicate predicate) {
+        List<TaskResponseDTO> taskResponseDTOS = taskService.getAllTasks(predicate);
         return ResponseEntity.ok().body(taskResponseDTOS);
     }
 

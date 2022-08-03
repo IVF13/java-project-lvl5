@@ -63,7 +63,8 @@ dependencies {
 			'com.querydsl:querydsl-jpa:5.0.0',
 			'com.rollbar:rollbar-spring-boot-webmvc:1.8.1',
 			'org.mapstruct:mapstruct:1.5.2.Final',
-			'org.springdoc:springdoc-openapi-ui:1.6.9'
+			'org.springdoc:springdoc-openapi-ui:1.6.9',
+			'com.rollbar:rollbar-spring-boot-webmvc:1.7.8'
 	)
 
 	liquibaseRuntime(

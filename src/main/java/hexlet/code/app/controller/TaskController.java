@@ -38,8 +38,8 @@ public class TaskController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<List<TaskResponseDTO>> getAllTasks
-            (@QuerydslPredicate(root = Task.class) Predicate predicate) {
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks(@QuerydslPredicate(root = Task.class)
+                                                             Predicate predicate) {
         List<TaskResponseDTO> taskResponseDTOS = taskService.getAllTasks(predicate);
         return ResponseEntity.ok().body(taskResponseDTOS);
     }

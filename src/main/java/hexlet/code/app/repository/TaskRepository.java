@@ -11,7 +11,6 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 
 import java.util.Optional;
 
-
 public interface TaskRepository extends JpaRepository<Task, Long>, QuerydslPredicateExecutor<Task>,
         QuerydslBinderCustomizer<QTask> {
     Optional<Task> findByName(String name);
@@ -21,4 +20,5 @@ public interface TaskRepository extends JpaRepository<Task, Long>, QuerydslPredi
     @Override
     default public void customize(QuerydslBindings bindings, QTask task) {
     }
+
 }

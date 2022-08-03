@@ -13,6 +13,8 @@ import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
+import liquibase.pro.packaged.L;
+import liquibase.pro.packaged.U;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,33 +90,75 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void getAllTasksTest() throws Exception {
+    public void getAllTasksWthFiltrationOptionTest() throws Exception {
         utils.regDefaultUser();
         utils.createDefaultTaskStatus();
+        utils.createDefaultLabel();
+        utils.regUser(new User("fname", "lname", TEST_USERNAME_2, "pwddd"));
+        utils.createTaskStatus(new TaskStatus("anotherTaskStatus"));
+        utils.createLabel(new Label("anotherLabel"));
+
 
         User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
         TaskStatus existsTaskStatus = taskStatusRepository.findByName(TEST_TASK_STATUS_NAME).get();
+        Label existsLabel = labelRepository.findByName(TEST_LABEL_NAME).get();
+        User anotherExistsUser = userRepository.findByEmail(TEST_USERNAME_2).get();
+        TaskStatus anotherExistsTaskStatus = taskStatusRepository.findByName("anotherTaskStatus").get();
+        Label anotherExistsLabel = labelRepository.findByName("anotherLabel").get();
+
 
         utils.createTask(new TaskRequestDTO("taskName1", "taskDescription1",
-                existsUser.getId(), existsTaskStatus.getId()), existsUser);
+                existsUser.getId(), List.of(existsLabel.getId()), existsTaskStatus.getId()), existsUser);
         utils.createTask(new TaskRequestDTO("taskName2", "taskDescription2",
-                existsUser.getId(), existsTaskStatus.getId()), existsUser);
+                anotherExistsUser.getId(), List.of(anotherExistsLabel.getId()),
+                anotherExistsTaskStatus.getId()), anotherExistsUser);
         utils.createTask(new TaskRequestDTO("taskName3", "taskDescription3",
-                existsUser.getId(), existsTaskStatus.getId()), existsUser);
+                existsUser.getId(), existsTaskStatus.getId()), anotherExistsUser);
 
-        final var response = utils.perform(
+
+        final var response1 = utils.perform(
                         get(TASK_CONTROLLER_PATH)
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        final List<Task> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<Task> tasks1 = fromJson(response1.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(tasks.size(), 3);
-        assertEquals(tasks.get(0).getName(), "taskName1");
-        assertEquals(tasks.get(1).getName(), "taskName2");
-        assertEquals(tasks.get(2).getName(), "taskName3");
+        assertEquals(tasks1.size(), 3);
+        assertEquals(tasks1.get(0).getName(), "taskName1");
+        assertEquals(tasks1.get(1).getName(), "taskName2");
+        assertEquals(tasks1.get(2).getName(), "taskName3");
+
+
+        final var response2 = utils.perform(
+                        get(TASK_CONTROLLER_PATH + "?taskStatus=" + existsTaskStatus.getId() + "&executorId="
+                                + existsUser.getId() + "&labels=" + existsLabel.getId() + "&authorId=" + existsUser.getId())
+                ).andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        final List<Task> tasks2 = fromJson(response2.getContentAsString(), new TypeReference<>() {
+        });
+
+        assertEquals(tasks2.size(), 1);
+        assertEquals(tasks2.get(0).getName(), "taskName1");
+
+
+        final var response3 = utils.perform(
+                        get(TASK_CONTROLLER_PATH + "?taskStatus=" + anotherExistsTaskStatus.getId()
+                                + "&executorId=" + anotherExistsUser.getId()
+                                + "&labels=" + anotherExistsLabel.getId()
+                                + "&authorId=" + anotherExistsUser.getId())
+                ).andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        final List<Task> tasks3 = fromJson(response3.getContentAsString(), new TypeReference<>() {
+        });
+
+        assertEquals(tasks3.size(), 1);
+        assertEquals(tasks3.get(0).getName(), "taskName2");
     }
 
     @Test

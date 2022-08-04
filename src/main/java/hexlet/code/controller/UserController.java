@@ -37,7 +37,6 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User found",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "User with that id not found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = USER_ID_IN_CONTROLLER)
     public ResponseEntity<UserDTO> getUserById(@Parameter(description = "Id of user to be found")

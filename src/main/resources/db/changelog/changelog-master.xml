@@ -1,16 +1,16 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-1">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-1">
         <createTable tableName="task_label">
-            <column name="task_id" type="BIGINT">
+            <column name="label_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="label_id" type="BIGINT">
+            <column name="task_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-2">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-2">
         <createTable tableName="task_statuses">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="task_statusesPK"/>
@@ -19,7 +19,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-3">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-3">
         <createTable tableName="tasks">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="tasksPK"/>
@@ -36,7 +36,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-4">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-4">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -49,22 +49,22 @@
             <column name="password" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-5">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-5">
         <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-6">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-6">
         <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_label" constraintName="FK45j1msvaecla2batb854mv44o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="tasks" validate="true"/>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-7">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-7">
         <addForeignKeyConstraint baseColumnNames="label_id" baseTableName="task_label" constraintName="FK4vxcl7v2rqfurfbffjlbnndyv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_statuses" validate="true"/>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-8">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-8">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="tasks" constraintName="FK6s1ob9k4ihi75xbxe2w0ylsdh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-9">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-9">
         <addForeignKeyConstraint baseColumnNames="task_status_id" baseTableName="tasks" constraintName="FK7xndk7y2uk29wdu734xyutbqe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_statuses" validate="true"/>
     </changeSet>
-    <changeSet author="Ivan Gordienko (generated)" id="1659375263964-10">
+    <changeSet author="Ivan Gordienko (generated)" id="1659608525037-10">
         <addForeignKeyConstraint baseColumnNames="executor_id" baseTableName="tasks" constraintName="FKbrg922bkqn5m7212jsqjg6ioe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
 </databaseChangeLog>

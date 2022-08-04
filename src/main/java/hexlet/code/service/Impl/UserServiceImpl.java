@@ -34,8 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO getUserById(String id) throws NoPermissionException {
-        checkIdentityPermissions(id);
+    public UserDTO getUserById(String id) {
 
         User user = userRepository.findById(Long.parseLong(id)).orElse(null);
 

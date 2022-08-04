@@ -75,13 +75,11 @@ public class UserControllerTest {
     @Test
     public void getUserByIdFailsTest() throws Exception {
         utils.regDefaultUser();
-        utils.regUser(new User("new name", "new last name", TestUtils.TEST_USERNAME_2, "new pwd"));
 
         final User expectedUser = userRepository.findAll().get(0);
-        final User anotherUser = userRepository.findAll().get(1);
 
-        utils.perform(get(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, expectedUser.getId()), anotherUser)
-                .andExpect(status().isLocked());
+        utils.perform(get(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, expectedUser.getId() + 100), expectedUser)
+                .andExpect(status().isNotFound());
     }
 
     @Test

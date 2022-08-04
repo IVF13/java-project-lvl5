@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDTO getUserById(String id) throws NoPermissionException;
+    UserDTO getUserById(String id);
 
     List<UserDTO> getAllUsers();
 

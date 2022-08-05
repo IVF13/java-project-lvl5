@@ -1,4 +1,4 @@
-package hexlet.code.util;
+package hexlet.code.handler;
 
 import com.rollbar.notifier.Rollbar;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package hexlet.code.util;
+package hexlet.code.mapper;
 
-import hexlet.code.model.DTO.TaskResponseDTO;
-import hexlet.code.model.entity.Task;
+import hexlet.code.DTO.TaskResponseDTO;
+import hexlet.code.model.Task;
 import org.mapstruct.Mapper;
 
 

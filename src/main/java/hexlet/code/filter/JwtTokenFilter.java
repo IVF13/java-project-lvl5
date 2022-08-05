@@ -1,7 +1,7 @@
 package hexlet.code.filter;
 
 import hexlet.code.repository.UserRepository;
-import hexlet.code.util.JwtTokenUtil;
+import hexlet.code.component.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

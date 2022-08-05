@@ -1,7 +1,7 @@
 package hexlet.code.service.Impl;
 
-import hexlet.code.model.entity.Label;
-import hexlet.code.model.entity.Task;
+import hexlet.code.model.Label;
+import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package hexlet.code.model.DTO;
+package hexlet.code.DTO;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

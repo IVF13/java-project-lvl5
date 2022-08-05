@@ -1,4 +1,4 @@
-package hexlet.code.model.entity;
+package hexlet.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

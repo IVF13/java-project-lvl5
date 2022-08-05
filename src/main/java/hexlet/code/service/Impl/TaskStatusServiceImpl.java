@@ -1,7 +1,7 @@
 package hexlet.code.service.Impl;
 
-import hexlet.code.model.entity.Task;
-import hexlet.code.model.entity.TaskStatus;
+import hexlet.code.model.Task;
+import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
 import lombok.RequiredArgsConstructor;

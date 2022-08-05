@@ -1,7 +1,7 @@
-package hexlet.code.util;
+package hexlet.code.mapper;
 
-import hexlet.code.model.DTO.TaskRequestDTO;
-import hexlet.code.model.entity.Task;
+import hexlet.code.DTO.TaskRequestDTO;
+import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;

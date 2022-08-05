@@ -1,11 +1,11 @@
 package hexlet.code.service.Impl;
 
-import hexlet.code.model.entity.Task;
-import hexlet.code.model.entity.User;
-import hexlet.code.model.DTO.UserDTO;
+import hexlet.code.model.Task;
+import hexlet.code.model.User;
+import hexlet.code.DTO.UserDTO;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
-import hexlet.code.util.UserDTOMapper;
+import hexlet.code.mapper.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

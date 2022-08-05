@@ -1,8 +1,8 @@
 package hexlet.code.service;
 
 import com.querydsl.core.types.Predicate;
-import hexlet.code.model.DTO.TaskRequestDTO;
-import hexlet.code.model.DTO.TaskResponseDTO;
+import hexlet.code.DTO.TaskRequestDTO;
+import hexlet.code.DTO.TaskResponseDTO;
 
 import java.util.List;
 

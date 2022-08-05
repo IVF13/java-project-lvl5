@@ -1,6 +1,6 @@
 package hexlet.code.service;
 
-import hexlet.code.model.entity.Label;
+import hexlet.code.model.Label;
 
 import javax.management.relation.RelationException;
 import java.util.List;

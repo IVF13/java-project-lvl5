@@ -1,6 +1,6 @@
 package hexlet.code.service;
 
-import hexlet.code.model.entity.TaskStatus;
+import hexlet.code.model.TaskStatus;
 
 import javax.management.relation.RelationException;
 import java.util.List;

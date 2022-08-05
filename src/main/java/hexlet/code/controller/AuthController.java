@@ -1,8 +1,8 @@
 package hexlet.code.controller;
 
-import hexlet.code.model.DTO.AuthRequestDTO;
-import hexlet.code.model.entity.User;
-import hexlet.code.util.JwtTokenUtil;
+import hexlet.code.DTO.AuthRequestDTO;
+import hexlet.code.model.User;
+import hexlet.code.component.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

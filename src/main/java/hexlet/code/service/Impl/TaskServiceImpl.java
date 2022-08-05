@@ -1,14 +1,14 @@
 package hexlet.code.service.Impl;
 
 import com.querydsl.core.types.Predicate;
-import hexlet.code.model.DTO.TaskRequestDTO;
-import hexlet.code.model.DTO.TaskResponseDTO;
-import hexlet.code.model.entity.Task;
+import hexlet.code.DTO.TaskRequestDTO;
+import hexlet.code.DTO.TaskResponseDTO;
+import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
-import hexlet.code.util.TaskRequestDTOMapper;
-import hexlet.code.util.TaskResponseDTOMapper;
+import hexlet.code.mapper.TaskRequestDTOMapper;
+import hexlet.code.mapper.TaskResponseDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

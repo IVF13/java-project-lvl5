@@ -1,7 +1,7 @@
-package hexlet.code.util;
+package hexlet.code.mapper;
 
-import hexlet.code.model.entity.User;
-import hexlet.code.model.DTO.UserDTO;
+import hexlet.code.model.User;
+import hexlet.code.DTO.UserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(imports = User.class, componentModel = "spring")

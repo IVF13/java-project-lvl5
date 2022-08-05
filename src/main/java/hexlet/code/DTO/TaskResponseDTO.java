@@ -1,7 +1,7 @@
-package hexlet.code.model.DTO;
+package hexlet.code.DTO;
 
-import hexlet.code.model.entity.Label;
-import hexlet.code.model.entity.TaskStatus;
+import hexlet.code.model.Label;
+import hexlet.code.model.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

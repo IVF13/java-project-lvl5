@@ -1,8 +1,14 @@
 install:
 	./gradlew clean install
 
-run-dist:
+start-dist:
 	./build/install/app/bin/app
+
+start:
+	./gradlew bootRun --args='--spring.profiles.active=dev'
+
+start-prod:
+	./gradlew bootRun --args='--spring.profiles.active=prod'
 
 check-updates:
 	./gradlew dependencyUpdates

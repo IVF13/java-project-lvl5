@@ -1,7 +1,7 @@
 package hexlet.code.repository;
 
 
-import hexlet.code.model.entity.QTask;
+import hexlet.code.model.QTask;
 import hexlet.code.model.Task;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -32,12 +31,10 @@ public class Task {
 
     private String description;
 
-    @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.DETACH)
     @JoinColumn(name = "task_status_id")
     private TaskStatus taskStatus;
 
-    @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User author;

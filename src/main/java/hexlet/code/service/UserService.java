@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDTO getUserById(String id);
+    UserDTO getUserById(Long id);
 
     List<UserDTO> getAllUsers();
 
     UserDTO createUser(User user);
 
-    UserDTO updateUser(String id, User user) throws NoPermissionException;
+    UserDTO updateUser(Long id, User user) throws NoPermissionException;
 
-    String deleteUser(String id) throws NoPermissionException, RelationException;
+    String deleteUser(Long id) throws NoPermissionException, RelationException;
 
     User getCurrentUser();
 

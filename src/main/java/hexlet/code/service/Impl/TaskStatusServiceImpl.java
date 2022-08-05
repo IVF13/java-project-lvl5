@@ -22,9 +22,9 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     private final TaskStatusRepository taskStatusRepository;
 
     @Override
-    public TaskStatus getTaskStatusById(String id) {
+    public TaskStatus getTaskStatusById(Long id) {
 
-        TaskStatus taskStatus = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
+        TaskStatus taskStatus = taskStatusRepository.findById(id).orElse(null);
 
         if (taskStatus == null) {
             throw new NotFoundException("Task Status Not Found");
@@ -51,8 +51,8 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     }
 
     @Override
-    public TaskStatus updateTaskStatus(String id, TaskStatus updatedTaskStatus) {
-        TaskStatus existsTaskStatus = taskStatusRepository.findById(Long.parseLong(id)).orElse(null);
+    public TaskStatus updateTaskStatus(Long id, TaskStatus updatedTaskStatus) {
+        TaskStatus existsTaskStatus = taskStatusRepository.findById(id).orElse(null);
 
         if (existsTaskStatus == null) {
             throw new NotFoundException("Task Status Not Found");
@@ -61,25 +61,25 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         updatedTaskStatus.setCreatedAt(existsTaskStatus.getCreatedAt());
 
         taskStatusRepository.save(updatedTaskStatus);
-        updatedTaskStatus = taskStatusRepository.findById(Long.parseLong(id)).get();
+        updatedTaskStatus = taskStatusRepository.findById(id).get();
 
         return updatedTaskStatus;
     }
 
     @Override
-    public String deleteTaskStatus(String id) throws RelationException {
+    public String deleteTaskStatus(Long id) throws RelationException {
 
-        if (!taskStatusRepository.existsById(Long.parseLong(id))) {
+        if (!taskStatusRepository.existsById(id)) {
             throw new NotFoundException("Task Status Not Found");
         } else {
 
-            List<Task> tasks = taskStatusRepository.findById(Long.parseLong(id)).get().getTasks();
+            List<Task> tasks = taskStatusRepository.findById(id).get().getTasks();
 
             if (!tasks.isEmpty()) {
                 throw new RelationException("Task status have related tasks, unable to delete");
             }
 
-            taskStatusRepository.deleteById(Long.parseLong(id));
+            taskStatusRepository.deleteById(id);
         }
 
         return "Task status successfully deleted";

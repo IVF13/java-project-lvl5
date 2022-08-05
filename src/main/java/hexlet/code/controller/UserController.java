@@ -40,7 +40,7 @@ public class UserController {
     })
     @GetMapping(path = USER_ID_IN_CONTROLLER)
     public ResponseEntity<UserDTO> getUserById(@Parameter(description = "Id of user to be found")
-                                               @PathVariable String id) {
+                                               @PathVariable Long id) {
         UserDTO userDTO = userService.getUserById(id);
         return ResponseEntity.ok().body(userDTO);
     }
@@ -82,7 +82,7 @@ public class UserController {
     })
     @PutMapping(path = USER_ID_IN_CONTROLLER)
     public ResponseEntity<UserDTO> updateUser(@Parameter(description = "Id of user to be updated")
-                                              @PathVariable String id,
+                                              @PathVariable Long id,
                                               @Parameter(description = "User data to update")
                                               @RequestBody @Valid User user)
             throws NoPermissionException {
@@ -101,7 +101,7 @@ public class UserController {
     })
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)
     public String deleteUser(@Parameter(description = "Id of user to be deleted")
-                             @PathVariable String id) throws NoPermissionException, RelationException {
+                             @PathVariable Long id) throws NoPermissionException, RelationException {
         return userService.deleteUser(id);
     }
 

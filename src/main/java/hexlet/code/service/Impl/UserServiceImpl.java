@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO getUserById(String id) {
+    public UserDTO getUserById(Long id) {
 
-        User user = userRepository.findById(Long.parseLong(id)).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
 
         if (user == null) {
             throw new NotFoundException("User Not Found");
@@ -66,10 +66,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO updateUser(String id, User updatedUser) throws NoPermissionException {
+    public UserDTO updateUser(Long id, User updatedUser) throws NoPermissionException {
         checkIdentityPermissions(id);
 
-        User existsUser = userRepository.findById(Long.parseLong(id)).orElse(null);
+        User existsUser = userRepository.findById(id).orElse(null);
 
         if (existsUser == null) {
             throw new NotFoundException("User Not Found");
@@ -78,19 +78,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         updatedUser.setCreatedAt(existsUser.getCreatedAt());
 
         userRepository.save(updatedUser);
-        updatedUser = userRepository.findById(Long.parseLong(id)).get();
+        updatedUser = userRepository.findById(id).get();
 
         return userDTOMapper.userToUserDTO(updatedUser);
     }
 
     @Override
-    public String deleteUser(String id) throws NoPermissionException, RelationException {
+    public String deleteUser(Long id) throws NoPermissionException, RelationException {
         checkIdentityPermissions(id);
 
-        if (!userRepository.existsById(Long.parseLong(id))) {
+        if (!userRepository.existsById(id)) {
             throw new NotFoundException("User Not Found");
         } else {
-            User user = userRepository.findById(Long.parseLong(id)).get();
+            User user = userRepository.findById(id).get();
             List<Task> ownedTasks = user.getOwnedTasks();
             List<Task> claimedTasks = user.getClaimedTasks();
 
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 throw new RelationException("User have related tasks, unable to delete");
             }
 
-            userRepository.deleteById(Long.parseLong(id));
+            userRepository.deleteById(id);
         }
 
         return "User successfully deleted";
@@ -114,8 +114,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return (User) authentication.getPrincipal();
     }
 
-    private void checkIdentityPermissions(String id) throws NoPermissionException {
-        if (!getCurrentUser().getId().equals(Long.parseLong(id))) {
+    private void checkIdentityPermissions(Long id) throws NoPermissionException {
+        if (!getCurrentUser().getId().equals(id)) {
             throw new NoPermissionException("You can edit and delete only your profile");
         }
 

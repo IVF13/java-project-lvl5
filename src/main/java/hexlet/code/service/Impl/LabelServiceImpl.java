@@ -22,8 +22,8 @@ public class LabelServiceImpl implements LabelService {
     private final LabelRepository labelRepository;
 
     @Override
-    public Label getLabelById(String id) {
-        Label label = labelRepository.findById(Long.parseLong(id)).orElse(null);
+    public Label getLabelById(Long id) {
+        Label label = labelRepository.findById(id).orElse(null);
 
         if (label == null) {
             throw new NotFoundException("Label Not Found");
@@ -50,8 +50,8 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Label updateLabel(String id, Label updatedLabel) {
-        Label existsLabel = labelRepository.findById(Long.parseLong(id)).orElse(null);
+    public Label updateLabel(Long id, Label updatedLabel) {
+        Label existsLabel = labelRepository.findById(id).orElse(null);
 
         if (existsLabel == null) {
             throw new NotFoundException("Label Not Found");
@@ -60,25 +60,25 @@ public class LabelServiceImpl implements LabelService {
         updatedLabel.setCreatedAt(existsLabel.getCreatedAt());
 
         labelRepository.save(updatedLabel);
-        updatedLabel = labelRepository.findById(Long.parseLong(id)).get();
+        updatedLabel = labelRepository.findById(id).get();
 
         return updatedLabel;
     }
 
     @Override
-    public String deleteLabel(String id) throws RelationException {
+    public String deleteLabel(Long id) throws RelationException {
 
-        if (!labelRepository.existsById(Long.parseLong(id))) {
+        if (!labelRepository.existsById(id)) {
             throw new NotFoundException("Label Not Found");
         } else {
 
-            List<Task> tasks = labelRepository.findById(Long.parseLong(id)).get().getTasks();
+            List<Task> tasks = labelRepository.findById(id).get().getTasks();
 
             if (!tasks.isEmpty()) {
                 throw new RelationException("Label have related tasks, unable to delete");
             }
 
-            labelRepository.deleteById(Long.parseLong(id));
+            labelRepository.deleteById(id);
         }
 
         return "Task status successfully deleted";

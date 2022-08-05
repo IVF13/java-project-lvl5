@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface TaskService {
 
-    TaskResponseDTO getTaskById(String id);
+    TaskResponseDTO getTaskById(Long id);
 
     List<TaskResponseDTO> getAllTasks(Predicate predicate);
 
     TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO);
 
-    TaskResponseDTO updateTask(String id, TaskRequestDTO taskRequestDTO);
+    TaskResponseDTO updateTask(Long id, TaskRequestDTO taskRequestDTO);
 
-    String deleteTask(String id);
+    String deleteTask(Long id);
 
 }

@@ -34,8 +34,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskResponseDTOMapper taskResponseDTOMapper;
 
     @Override
-    public TaskResponseDTO getTaskById(String id) {
-        Task task = taskRepository.findById(Long.parseLong(id)).orElse(null);
+    public TaskResponseDTO getTaskById(Long id) {
+        Task task = taskRepository.findById(id).orElse(null);
 
         if (task == null) {
             throw new NotFoundException("Task Not Found");
@@ -66,9 +66,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponseDTO updateTask(String id, TaskRequestDTO taskRequestDTO) {
+    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskRequestDTO) {
         Task updatedTask = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
-        Task existsTask = taskRepository.findById(Long.parseLong(id)).orElse(null);
+        Task existsTask = taskRepository.findById(id).orElse(null);
 
         if (existsTask == null) {
             throw new NotFoundException("Task Not Found");
@@ -77,18 +77,18 @@ public class TaskServiceImpl implements TaskService {
         updatedTask.setCreatedAt(existsTask.getCreatedAt());
 
         taskRepository.save(updatedTask);
-        updatedTask = taskRepository.findById(Long.parseLong(id)).get();
+        updatedTask = taskRepository.findById(id).get();
 
         return taskResponseDTOMapper.taskToTaskResponseDTO(updatedTask);
     }
 
     @Override
-    public String deleteTask(String id) {
+    public String deleteTask(Long id) {
 
-        if (!taskRepository.existsById(Long.parseLong(id))) {
+        if (!taskRepository.existsById(id)) {
             throw new NotFoundException("Task Not Found");
         } else {
-            taskRepository.deleteById(Long.parseLong(id));
+            taskRepository.deleteById(id);
         }
 
         return "Task status successfully deleted";

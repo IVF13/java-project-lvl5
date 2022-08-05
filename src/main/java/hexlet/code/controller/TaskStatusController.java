@@ -29,7 +29,7 @@ public class TaskStatusController {
     private final TaskStatusService taskStatusService;
 
     @GetMapping(path = TASK_STATUS_ID)
-    public ResponseEntity<TaskStatus> getTaskStatusById(@PathVariable String id) {
+    public ResponseEntity<TaskStatus> getTaskStatusById(@PathVariable Long id) {
         TaskStatus taskStatus = taskStatusService.getTaskStatusById(id);
         return ResponseEntity.ok().body(taskStatus);
     }
@@ -46,14 +46,14 @@ public class TaskStatusController {
     }
 
     @PutMapping(path = TASK_STATUS_ID)
-    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable String id,
+    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable Long id,
                                                        @RequestBody @Valid TaskStatus taskStatus) {
         TaskStatus updatedTaskStatus = taskStatusService.updateTaskStatus(id, taskStatus);
         return ResponseEntity.ok().body(updatedTaskStatus);
     }
 
     @DeleteMapping(path = TASK_STATUS_ID)
-    public String deleteUser(@PathVariable String id) throws RelationException {
+    public String deleteUser(@PathVariable Long id) throws RelationException {
         return taskStatusService.deleteTaskStatus(id);
     }
 

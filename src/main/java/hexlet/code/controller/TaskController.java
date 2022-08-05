@@ -45,7 +45,7 @@ public class TaskController {
     })
     @GetMapping(path = TASK_ID)
     public ResponseEntity<TaskResponseDTO> getTaskById(@Parameter(description = "Id of task to be found")
-                                                       @PathVariable String id) {
+                                                       @PathVariable Long id) {
         TaskResponseDTO taskResponseDTO = taskService.getTaskById(id);
         return ResponseEntity.ok().body(taskResponseDTO);
     }
@@ -90,7 +90,7 @@ public class TaskController {
     })
     @PutMapping(path = TASK_ID)
     public ResponseEntity<TaskResponseDTO> updateTask(@Parameter(description = "Id of task to be updated")
-                                                      @PathVariable String id,
+                                                      @PathVariable Long id,
                                                       @Parameter(description = "Task data to update")
                                                       @RequestBody @Valid TaskRequestDTO taskRequestDTO) {
         TaskResponseDTO updatedTask = taskService.updateTask(id, taskRequestDTO);
@@ -106,7 +106,7 @@ public class TaskController {
     })
     @DeleteMapping(path = TASK_ID)
     public String deleteUser(@Parameter(description = "Id of task to be deleted")
-                             @PathVariable String id) {
+                             @PathVariable Long id) {
         return taskService.deleteTask(id);
     }
 

@@ -41,7 +41,7 @@ public class LabelController {
     })
     @GetMapping(path = LABEL_ID)
     public ResponseEntity<Label> getLabelById(@Parameter(description = "Id of label to be found")
-                                              @PathVariable String id) {
+                                              @PathVariable Long id) {
         Label label = labelService.getLabelById(id);
         return ResponseEntity.ok().body(label);
     }
@@ -82,7 +82,7 @@ public class LabelController {
     })
     @PutMapping(path = LABEL_ID)
     public ResponseEntity<Label> updateLabel(@Parameter(description = "Id of label to be updated")
-                                             @PathVariable String id,
+                                             @PathVariable Long id,
                                              @Parameter(description = "Label data to update")
                                              @RequestBody @Valid Label label) {
         Label updatedLabel = labelService.updateLabel(id, label);
@@ -99,7 +99,7 @@ public class LabelController {
     })
     @DeleteMapping(path = LABEL_ID)
     public String deleteLabel(@Parameter(description = "Id of label to be deleted")
-                              @PathVariable String id) throws RelationException {
+                              @PathVariable Long id) throws RelationException {
         return labelService.deleteLabel(id);
     }
 }

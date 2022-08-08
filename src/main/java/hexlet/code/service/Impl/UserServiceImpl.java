@@ -111,7 +111,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        return userRepository.findById(userId).get();
     }
 
     private void checkIdentityPermissions(Long id) throws NoPermissionException {

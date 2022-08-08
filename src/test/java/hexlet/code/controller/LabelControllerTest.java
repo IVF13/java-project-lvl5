@@ -73,9 +73,9 @@ public class LabelControllerTest {
         utils.regDefaultUser();
         User existsUser = userRepository.findByEmail(TestUtils.TEST_USERNAME).get();
 
-        utils.createLabel(new Label("new"));
-        utils.createLabel(new Label("one"));
-        utils.createLabel(new Label("label"));
+        utils.createLabel(new Label(null, "new", null, null));
+        utils.createLabel(new Label(null, "one", null, null));
+        utils.createLabel(new Label(null, "label", null, null));
 
         final var response = utils.perform(
                         MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH),
@@ -123,7 +123,7 @@ public class LabelControllerTest {
 
         final var response2 = utils.perform(
                         put(LABEL_CONTROLLER_PATH + LABEL_ID, existsLabel.getId())
-                                .content(TestUtils.asJson(new Label("newName")))
+                                .content(TestUtils.asJson(new Label(null, "newName", null, null)))
                                 .contentType(APPLICATION_JSON),
                         existsUser
                 ).andExpect(status().isOk())

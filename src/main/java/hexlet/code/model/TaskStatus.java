@@ -40,8 +40,8 @@ public class TaskStatus {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    public TaskStatus(String taskStatusName) {
-        this.name = taskStatusName;
+    public TaskStatus(Long id) {
+        this.id = id;
     }
 
     @Override

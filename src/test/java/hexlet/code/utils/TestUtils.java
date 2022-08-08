@@ -40,8 +40,8 @@ public class TestUtils {
             TEST_USERNAME,
             "pwd"
     );
-    private final TaskStatus testCreationTaskStatus = new TaskStatus(TEST_TASK_STATUS_NAME);
-    private final Label testCreationLabel = new Label(TEST_LABEL_NAME);
+    private final TaskStatus testCreationTaskStatus = new TaskStatus(null, TEST_TASK_STATUS_NAME, null, null);
+    private final Label testCreationLabel = new Label(null, TEST_LABEL_NAME, null, null);
 
     public User getTestRegistrationUser() {
         return testRegistrationUser;

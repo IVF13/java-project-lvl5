@@ -43,8 +43,8 @@ public class Label {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    public Label(String labelName) {
-        this.name = labelName;
+    public Label(Long id) {
+        this.id = id;
     }
 
     @Override

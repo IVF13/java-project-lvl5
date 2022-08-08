@@ -74,10 +74,10 @@ public class TaskStatusControllerTest {
         utils.regDefaultUser();
         User existsUser = userRepository.findByEmail(TestUtils.TEST_USERNAME).get();
 
-        utils.createTaskStatus(new TaskStatus("new"));
-        utils.createTaskStatus(new TaskStatus("one"));
-        utils.createTaskStatus(new TaskStatus("task"));
-        utils.createTaskStatus(new TaskStatus("status"));
+        utils.createTaskStatus(new TaskStatus(null, "new", null, null));
+        utils.createTaskStatus(new TaskStatus(null, "one", null, null));
+        utils.createTaskStatus(new TaskStatus(null, "task", null, null));
+        utils.createTaskStatus(new TaskStatus(null, "status", null, null));
 
         final var response = utils.perform(
                         MockMvcRequestBuilders.get(TaskStatusController.TASK_STATUS_CONTROLLER_PATH),
@@ -128,7 +128,7 @@ public class TaskStatusControllerTest {
         final var response2 = utils.perform(
                         MockMvcRequestBuilders.put(TaskStatusController.TASK_STATUS_CONTROLLER_PATH
                                         + TaskStatusController.TASK_STATUS_ID, existsTaskStatus.getId())
-                                .content(TestUtils.asJson(new TaskStatus("newName")))
+                                .content(TestUtils.asJson(new TaskStatus(null, "newName", null, null)))
                                 .contentType(APPLICATION_JSON),
                         existsUser
                 ).andExpect(status().isOk())

@@ -93,8 +93,8 @@ public class TaskControllerTest {
         utils.createDefaultTaskStatus();
         utils.createDefaultLabel();
         utils.regUser(new User("fname", "lname", TEST_USERNAME_2, "pwddd"));
-        utils.createTaskStatus(new TaskStatus("anotherTaskStatus"));
-        utils.createLabel(new Label("anotherLabel"));
+        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null, null));
+        utils.createLabel(new Label(null, "anotherLabel", null, null));
 
 
         User existsUser = userRepository.findByEmail(TEST_USERNAME).get();
@@ -204,9 +204,9 @@ public class TaskControllerTest {
         assertEquals(task.getTaskStatus().getId(), existsTaskStatus.getId());
         assertEquals(task.getLabels().get(0).getName(), existsLabel.getName());
 
-        utils.createTaskStatus(new TaskStatus("anotherTaskStatus"));
+        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null, null));
         TaskStatus anotherExistsTaskStatus = taskStatusRepository.findByName("anotherTaskStatus").get();
-        utils.createLabel(new Label("anotherLabel"));
+        utils.createLabel(new Label(null, "anotherLabel", null, null));
         Label anotherExistsLabel = labelRepository.findByName("anotherLabel").get();
 
         final var response2 = utils.perform(

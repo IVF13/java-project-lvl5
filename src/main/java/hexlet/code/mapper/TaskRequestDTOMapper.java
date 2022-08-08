@@ -1,7 +1,10 @@
 package hexlet.code.mapper;
 
 import hexlet.code.DTO.TaskRequestDTO;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -10,9 +13,10 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.webjars.NotFoundException;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Mapper(imports = Task.class, componentModel = "spring")
 public abstract class TaskRequestDTOMapper {
@@ -33,23 +37,23 @@ public abstract class TaskRequestDTOMapper {
 
     @AfterMapping
     void taskRequestDTOToTask(@MappingTarget Task task, TaskRequestDTO taskRequestDTO) {
-        task.setTaskStatus(taskStatusRepository.getById(taskRequestDTO.getTaskStatusId()));
+        task.setAuthor(userService.getCurrentUser());
 
         if (taskRequestDTO.getExecutorId() != null) {
-            task.setExecutor(userRepository.getById(taskRequestDTO.getExecutorId()));
+            task.setExecutor(Optional.ofNullable(taskRequestDTO.getExecutorId()).map(User::new).orElse(null));
         }
+
+        task.setTaskStatus(Optional.ofNullable(taskRequestDTO.getTaskStatusId())
+                .map(TaskStatus::new).orElse(null));
 
         if (taskRequestDTO.getLabelIds() != null) {
-            task.setLabels(taskRequestDTO.getLabelIds().stream().map(x -> {
-                        if (labelRepository.findById(x).isPresent()) {
-                            return labelRepository.findById(x).get();
-                        }
-                        throw new NotFoundException("Label Not Found");
-                    })
-                    .collect(Collectors.toList()));
+            List<Label> labels = new ArrayList<>();
+            for (int i = 0; i < taskRequestDTO.getLabelIds().size(); i++) {
+                labels.add(Optional.ofNullable(taskRequestDTO.getLabelIds().get(i)).map(Label::new).orElse(null));
+            }
+            task.setLabels(labels);
         }
 
-        task.setAuthor(userRepository.findById(userService.getCurrentUser().getId()).get());
     }
 
 }

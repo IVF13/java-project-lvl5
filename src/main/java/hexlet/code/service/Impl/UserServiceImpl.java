@@ -1,11 +1,11 @@
 package hexlet.code.service.Impl;
 
+import hexlet.code.DTO.UserDTO;
+import hexlet.code.mapper.UserDTOMapper;
 import hexlet.code.model.Task;
 import hexlet.code.model.User;
-import hexlet.code.DTO.UserDTO;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
-import hexlet.code.mapper.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +23,8 @@ import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static hexlet.code.configuration.SecurityConfiguration.DEFAULT_AUTHORITIES;
+
 @Service
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -30,7 +32,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserDTOMapper userDTOMapper;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -105,8 +106,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .map(this::buildSpringUser)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found user with 'username': " + username));
+    }
+
+    private UserDetails buildSpringUser(final User user) {
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                DEFAULT_AUTHORITIES
+        );
     }
 
     public User getCurrentUser() {

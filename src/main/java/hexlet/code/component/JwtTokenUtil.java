@@ -1,6 +1,5 @@
 package hexlet.code.component;
 
-import hexlet.code.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -44,8 +43,8 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
-        return doGenerateToken(user.getEmail());
+    public String generateToken(UserDetails userDetails) {
+        return doGenerateToken(userDetails.getUsername());
     }
 
     private String doGenerateToken(String subject) {

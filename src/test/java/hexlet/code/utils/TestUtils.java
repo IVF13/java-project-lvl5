@@ -14,6 +14,7 @@ import hexlet.code.repository.UserRepository;
 import hexlet.code.component.JwtTokenUtil;
 import hexlet.code.controller.TaskStatusController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -59,6 +60,8 @@ public class TestUtils {
     private TaskRepository taskRepository;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     public void tearDown() {
         taskRepository.deleteAll();
@@ -116,7 +119,7 @@ public class TestUtils {
     }
 
     public ResultActions perform(final MockHttpServletRequestBuilder request, final User user) throws Exception {
-        final String token = jwtTokenUtil.generateToken(user);
+        final String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
         request.header(AUTHORIZATION, "Bearer " + token);
 
         return perform(request);

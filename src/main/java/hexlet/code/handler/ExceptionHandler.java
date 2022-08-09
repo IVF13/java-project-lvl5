@@ -3,7 +3,6 @@ package hexlet.code.handler;
 import com.rollbar.notifier.Rollbar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.LockedException;
 import org.webjars.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,12 +42,6 @@ public class ExceptionHandler {
     public ResponseEntity<String> handleEntityExistsException(EntityExistsException e) {
         rollbar.error(e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(LockedException.class)
-    public ResponseEntity<String> handleLockedException(LockedException e) {
-        rollbar.error(e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(RelationException.class)

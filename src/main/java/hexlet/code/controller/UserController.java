@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.RelationException;
-import javax.naming.NoPermissionException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -39,10 +37,9 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with that id not found"),
     })
     @GetMapping(path = USER_ID_IN_CONTROLLER)
-    public ResponseEntity<UserDTO> getUserById(@Parameter(description = "Id of user to be found")
+    public ResponseEntity<User> getUserById(@Parameter(description = "Id of user to be found")
                                                @PathVariable Long id) {
-        UserDTO userDTO = userService.getUserById(id);
-        return ResponseEntity.ok().body(userDTO);
+        return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
 
@@ -53,9 +50,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = "")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> userDTOS = userService.getAllUsers();
-        return ResponseEntity.ok().body(userDTOS);
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
     @Operation(summary = "Create new user")
@@ -66,9 +62,9 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Not valid user data")
     })
     @PostMapping(path = "")
-    public ResponseEntity<UserDTO> createUser(@Parameter(description = "User data to save")
-                                              @RequestBody @Valid User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
+    public ResponseEntity<User> createUser(@Parameter(description = "User data to save")
+                                              @RequestBody @Valid UserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
     }
 
     @Operation(summary = "Update user")
@@ -81,13 +77,11 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping(path = USER_ID_IN_CONTROLLER)
-    public ResponseEntity<UserDTO> updateUser(@Parameter(description = "Id of user to be updated")
+    public ResponseEntity<User> updateUser(@Parameter(description = "Id of user to be updated")
                                               @PathVariable Long id,
                                               @Parameter(description = "User data to update")
-                                              @RequestBody @Valid User user)
-            throws NoPermissionException {
-        UserDTO userDTO = userService.updateUser(id, user);
-        return ResponseEntity.ok().body(userDTO);
+                                              @RequestBody @Valid UserDTO userDTO) {
+        return ResponseEntity.ok().body(userService.updateUser(id, userDTO));
     }
 
     @Operation(summary = "Delete user by his id")
@@ -101,7 +95,7 @@ public class UserController {
     })
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)
     public String deleteUser(@Parameter(description = "Id of user to be deleted")
-                             @PathVariable Long id) throws NoPermissionException, RelationException {
+                             @PathVariable Long id) {
         return userService.deleteUser(id);
     }
 

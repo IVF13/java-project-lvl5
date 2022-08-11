@@ -1,6 +1,5 @@
 package hexlet.code.service.Impl;
 
-import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.management.relation.RelationException;
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -50,7 +48,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
         return taskStatus;
     }
 
-    @Override
+    @Override //переделать
     public TaskStatus updateTaskStatus(Long id, TaskStatus updatedTaskStatus) {
         TaskStatus existsTaskStatus = taskStatusRepository.findById(id).orElse(null);
 
@@ -67,21 +65,8 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     }
 
     @Override
-    public String deleteTaskStatus(Long id) throws RelationException {
-
-        if (!taskStatusRepository.existsById(id)) {
-            throw new NotFoundException("Task Status Not Found");
-        } else {
-
-            List<Task> tasks = taskStatusRepository.findById(id).get().getTasks();
-
-            if (!tasks.isEmpty()) {
-                throw new RelationException("Task status have related tasks, unable to delete");
-            }
-
-            taskStatusRepository.deleteById(id);
-        }
-
+    public String deleteTaskStatus(Long id) {
+        taskStatusRepository.deleteById(id);
         return "Task status successfully deleted";
     }
 

@@ -1,6 +1,7 @@
 package hexlet.code.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import hexlet.code.DTO.UserDTO;
 import hexlet.code.configuration.SecurityConfiguration;
 import hexlet.code.configuration.SpringConfigTests;
 import hexlet.code.DTO.TaskRequestDTO;
@@ -92,8 +93,8 @@ public class TaskControllerTest {
         utils.regDefaultUser();
         utils.createDefaultTaskStatus();
         utils.createDefaultLabel();
-        utils.regUser(new User("fname", "lname", TEST_USERNAME_2, "pwddd"));
-        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null, null));
+        utils.regUser(new UserDTO(TestUtils.TEST_USERNAME_2, "fname", "lname", "pwddd"));
+        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null));
         utils.createLabel(new Label(null, "anotherLabel", null, null));
 
 
@@ -204,7 +205,7 @@ public class TaskControllerTest {
         assertEquals(task.getTaskStatus().getId(), existsTaskStatus.getId());
         assertEquals(task.getLabels().get(0).getName(), existsLabel.getName());
 
-        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null, null));
+        utils.createTaskStatus(new TaskStatus(null, "anotherTaskStatus", null));
         TaskStatus anotherExistsTaskStatus = taskStatusRepository.findByName("anotherTaskStatus").get();
         utils.createLabel(new Label(null, "anotherLabel", null, null));
         Label anotherExistsLabel = labelRepository.findByName("anotherLabel").get();

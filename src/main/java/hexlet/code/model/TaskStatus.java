@@ -1,6 +1,5 @@
 package hexlet.code.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -31,10 +29,6 @@ public class TaskStatus {
     @Size(min = 1, max = 1_000)
     @Column(unique = true)
     private String name;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "taskStatus", fetch = FetchType.EAGER)
-    private List<Task> tasks;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

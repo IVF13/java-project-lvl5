@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.DTO.TaskRequestDTO;
+import hexlet.code.DTO.UserDTO;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
@@ -35,17 +36,12 @@ public class TestUtils {
     public static final String TEST_USERNAME_2 = "email2@email.com";
     public static final String TEST_TASK_STATUS_NAME = "testTaskStatusName";
     public static final String TEST_LABEL_NAME = "testLabelName";
-    private final User testRegistrationUser = new User(
-            "fname",
-            "lname",
-            TEST_USERNAME,
-            "pwd"
-    );
-    private final TaskStatus testCreationTaskStatus = new TaskStatus(null, TEST_TASK_STATUS_NAME, null, null);
+    private final UserDTO testRegistrationUserDTO = new UserDTO(TEST_USERNAME, "fname", "lname", "pwd");
+    private final TaskStatus testCreationTaskStatus = new TaskStatus(null, TEST_TASK_STATUS_NAME, null);
     private final Label testCreationLabel = new Label(null, TEST_LABEL_NAME, null, null);
 
-    public User getTestRegistrationUser() {
-        return testRegistrationUser;
+    public UserDTO getTestRegistrationUserDTO() {
+        return testRegistrationUserDTO;
     }
 
     @Autowired
@@ -74,12 +70,8 @@ public class TestUtils {
         userRepository.flush();
     }
 
-    public User getUserByEmail(final String email) {
-        return userRepository.findByEmail(email).get();
-    }
-
     public ResultActions regDefaultUser() throws Exception {
-        return regUser(testRegistrationUser);
+        return regUser(testRegistrationUserDTO);
     }
 
     public ResultActions createDefaultTaskStatus() throws Exception {
@@ -90,9 +82,9 @@ public class TestUtils {
         return createLabel(testCreationLabel);
     }
 
-    public ResultActions regUser(final User user) throws Exception {
+    public ResultActions regUser(final UserDTO userDTO) throws Exception {
         final var request = post(USER_CONTROLLER_PATH)
-                .content(asJson(user))
+                .content(asJson(userDTO))
                 .contentType(APPLICATION_JSON);
         return perform(request);
     }

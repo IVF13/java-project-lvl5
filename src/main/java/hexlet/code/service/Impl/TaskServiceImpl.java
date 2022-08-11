@@ -3,12 +3,11 @@ package hexlet.code.service.Impl;
 import com.querydsl.core.types.Predicate;
 import hexlet.code.DTO.TaskRequestDTO;
 import hexlet.code.DTO.TaskResponseDTO;
-import hexlet.code.model.Task;
-import hexlet.code.repository.LabelRepository;
-import hexlet.code.repository.TaskRepository;
-import hexlet.code.service.TaskService;
 import hexlet.code.mapper.TaskRequestDTOMapper;
 import hexlet.code.mapper.TaskResponseDTOMapper;
+import hexlet.code.model.Task;
+import hexlet.code.repository.TaskRepository;
+import hexlet.code.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import org.webjars.NotFoundException;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 
@@ -26,8 +24,6 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-
-    private final LabelRepository labelRepository;
 
     private final TaskRequestDTOMapper taskRequestDTOMapper;
 
@@ -59,38 +55,31 @@ public class TaskServiceImpl implements TaskService {
             throw new EntityExistsException("Task already exists");
         }
 
-        taskRepository.save(task);
-        task = taskRepository.findByName(task.getName()).get();
-
-        return taskResponseDTOMapper.taskToTaskResponseDTO(task);
+        return taskResponseDTOMapper.taskToTaskResponseDTO(taskRepository.save(task));
     }
 
     @Override
     public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskRequestDTO) {
         Task updatedTask = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
-        Task existsTask = taskRepository.findById(id).orElse(null);
+        Task taskToUpdate = taskRepository.findById(id).orElse(null);
 
-        if (existsTask == null) {
+        if (taskToUpdate == null) {
             throw new NotFoundException("Task Not Found");
         }
-        updatedTask.setId(existsTask.getId());
-        updatedTask.setCreatedAt(existsTask.getCreatedAt());
 
-        taskRepository.save(updatedTask);
-        updatedTask = taskRepository.findById(id).get();
+        taskToUpdate.setName(updatedTask.getName());
+        taskToUpdate.setDescription(updatedTask.getDescription());
+        taskToUpdate.setExecutor(updatedTask.getExecutor());
+        taskToUpdate.setAuthor(updatedTask.getAuthor());
+        taskToUpdate.setLabels(updatedTask.getLabels());
+        taskToUpdate.setTaskStatus(updatedTask.getTaskStatus());
 
-        return taskResponseDTOMapper.taskToTaskResponseDTO(updatedTask);
+        return taskResponseDTOMapper.taskToTaskResponseDTO(taskRepository.save(taskToUpdate));
     }
 
     @Override
     public String deleteTask(Long id) {
-
-        if (!taskRepository.existsById(id)) {
-            throw new NotFoundException("Task Not Found");
-        } else {
-            taskRepository.deleteById(id);
-        }
-
+        taskRepository.deleteById(id);
         return "Task status successfully deleted";
     }
 

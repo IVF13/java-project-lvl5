@@ -1,7 +1,6 @@
 package hexlet.code.service.Impl;
 
 import hexlet.code.model.Label;
-import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +48,7 @@ public class LabelServiceImpl implements LabelService {
         return label;
     }
 
-    @Override
+    @Override   //переделать
     public Label updateLabel(Long id, Label updatedLabel) {
         Label existsLabel = labelRepository.findById(id).orElse(null);
 
@@ -67,20 +66,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public String deleteLabel(Long id) throws RelationException {
-
-        if (!labelRepository.existsById(id)) {
-            throw new NotFoundException("Label Not Found");
-        } else {
-
-            List<Task> tasks = labelRepository.findById(id).get().getTasks();
-
-            if (!tasks.isEmpty()) {
-                throw new RelationException("Label have related tasks, unable to delete");
-            }
-
-            labelRepository.deleteById(id);
-        }
-
+        labelRepository.deleteById(id);
         return "Task status successfully deleted";
     }
 }

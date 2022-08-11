@@ -9,11 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -39,25 +39,13 @@ public class User {
     @NotBlank
     private String email;
 
+    @JsonIgnore
     @NotBlank
     private String password;
-
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-    private List<Task> ownedTasks;
-
-    @OneToMany(mappedBy = "executor", fetch = FetchType.EAGER)
-    private List<Task> claimedTasks;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
 
     public User(final Long id) {
         this.id = id;

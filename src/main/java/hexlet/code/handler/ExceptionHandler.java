@@ -10,8 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.management.relation.RelationException;
-import javax.naming.NoPermissionException;
 import javax.persistence.EntityExistsException;
 
 @ResponseBody

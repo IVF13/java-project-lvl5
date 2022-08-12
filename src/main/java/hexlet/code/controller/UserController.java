@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,10 @@ import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 @RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserController {
+
+    private static final String ONLY_OWNER_BY_ID = """
+            @userRepository.findById(#id).get().getEmail() == authentication.getName()
+        """;
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String USER_ID_IN_CONTROLLER = "/{id}";
 
@@ -77,6 +82,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping(path = USER_ID_IN_CONTROLLER)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     public ResponseEntity<User> updateUser(@Parameter(description = "Id of user to be updated")
                                               @PathVariable Long id,
                                               @Parameter(description = "User data to update")
@@ -94,6 +100,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     public String deleteUser(@Parameter(description = "Id of user to be deleted")
                              @PathVariable Long id) {
         return userService.deleteUser(id);

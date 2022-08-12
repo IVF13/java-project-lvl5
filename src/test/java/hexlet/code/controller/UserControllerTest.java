@@ -174,10 +174,10 @@ public class UserControllerTest {
         final var user = userRepository.findByEmail(TestUtils.TEST_USERNAME_2).get();
         final Long userId = userRepository.findByEmail(TestUtils.TEST_USERNAME).get().getId();
 
-//        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId), user)
-//                .andExpect(status().isLocked());
-//
-//        assertEquals(2, userRepository.count());
+        utils.perform(delete(USER_CONTROLLER_PATH + USER_ID_IN_CONTROLLER, userId), user)
+                .andExpect(status().isInternalServerError());
+
+        assertEquals(2, userRepository.count());
     }
 
 }

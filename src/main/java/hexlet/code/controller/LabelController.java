@@ -94,7 +94,6 @@ public class LabelController {
             @ApiResponse(responseCode = "200", description = "Label deleted",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "Label with that id not found"),
-            @ApiResponse(responseCode = "304", description = "Unable to delete label because he has related tasks"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(path = LABEL_ID)

@@ -76,7 +76,6 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User updated",
                     content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "423", description = "Unable to update another user, only yourself"),
             @ApiResponse(responseCode = "404", description = "User with that id not found"),
             @ApiResponse(responseCode = "422", description = "Not valid user data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -95,8 +94,6 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User deleted",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "User with that id not found"),
-            @ApiResponse(responseCode = "423", description = "Unable to delete another user, only yourself"),
-            @ApiResponse(responseCode = "304", description = "Unable to delete user because he has related tasks"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)

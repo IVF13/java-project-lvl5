@@ -48,20 +48,17 @@ public class LabelServiceImpl implements LabelService {
         return label;
     }
 
-    @Override   //переделать
+    @Override
     public Label updateLabel(Long id, Label updatedLabel) {
-        Label existsLabel = labelRepository.findById(id).orElse(null);
+        Label labelToUpdate = labelRepository.findById(id).orElse(null);
 
-        if (existsLabel == null) {
+        if (labelToUpdate == null) {
             throw new NotFoundException("Label Not Found");
         }
-        updatedLabel.setId(existsLabel.getId());
-        updatedLabel.setCreatedAt(existsLabel.getCreatedAt());
 
-        labelRepository.save(updatedLabel);
-        updatedLabel = labelRepository.findById(id).get();
+        labelToUpdate.setName(updatedLabel.getName());
 
-        return updatedLabel;
+        return labelRepository.save(labelToUpdate);
     }
 
     @Override

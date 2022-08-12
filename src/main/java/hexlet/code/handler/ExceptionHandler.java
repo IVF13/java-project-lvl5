@@ -32,22 +32,10 @@ public class ExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(NoPermissionException.class)
-    public ResponseEntity<String> handleNoPermissionException(NoPermissionException e) {
-        rollbar.error(e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.LOCKED);
-    }
-
     @org.springframework.web.bind.annotation.ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<String> handleEntityExistsException(EntityExistsException e) {
         rollbar.error(e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(RelationException.class)
-    public ResponseEntity<String> handleRelationException(RelationException e) {
-        rollbar.error(e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_MODIFIED);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)

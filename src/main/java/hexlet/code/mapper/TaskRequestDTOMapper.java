@@ -48,8 +48,8 @@ public abstract class TaskRequestDTOMapper {
 
         if (taskRequestDTO.getLabelIds() != null) {
             List<Label> labels = new ArrayList<>();
-            for (int i = 0; i < taskRequestDTO.getLabelIds().size(); i++) {
-                labels.add(Optional.ofNullable(taskRequestDTO.getLabelIds().get(i)).map(Label::new).orElse(null));
+            for (Long labelId : taskRequestDTO.getLabelIds()) {
+                labels.add(Optional.ofNullable(labelId).map(Label::new).orElse(null));
             }
             task.setLabels(labels);
         }

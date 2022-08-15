@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +39,11 @@ public class LabelController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = LABEL_ID)
-    public ResponseEntity<Label> getLabelById(@Parameter(description = "Id of label to be found")
-                                              @PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public Label getLabelById(@Parameter(description = "Id of label to be found")
+                              @PathVariable Long id) {
         Label label = labelService.getLabelById(id);
-        return ResponseEntity.ok().body(label);
+        return label;
     }
 
     @Operation(summary = "Get list of all labels")
@@ -53,9 +53,10 @@ public class LabelController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = "")
-    public ResponseEntity<List<Label>> getAllLabels() {
+    @ResponseStatus(HttpStatus.OK)
+    public List<Label> getAllLabels() {
         List<Label> labels = labelService.getAllLabels();
-        return ResponseEntity.ok().body(labels);
+        return labels;
     }
 
     @Operation(summary = "Create new label")
@@ -67,9 +68,10 @@ public class LabelController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping(path = "")
-    public ResponseEntity<Label> createLabel(@Parameter(description = "Label data to save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Label createLabel(@Parameter(description = "Label data to save")
                                              @RequestBody @Valid Label label) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(labelService.createLabel(label));
+        return labelService.createLabel(label);
     }
 
     @Operation(summary = "Update user")
@@ -81,12 +83,13 @@ public class LabelController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping(path = LABEL_ID)
-    public ResponseEntity<Label> updateLabel(@Parameter(description = "Id of label to be updated")
+    @ResponseStatus(HttpStatus.OK)
+    public Label updateLabel(@Parameter(description = "Id of label to be updated")
                                              @PathVariable Long id,
-                                             @Parameter(description = "Label data to update")
+                             @Parameter(description = "Label data to update")
                                              @RequestBody @Valid Label label) {
         Label updatedLabel = labelService.updateLabel(id, label);
-        return ResponseEntity.ok().body(updatedLabel);
+        return updatedLabel;
     }
 
     @Operation(summary = "Delete user by his id")
@@ -97,8 +100,9 @@ public class LabelController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(path = LABEL_ID)
-    public String deleteLabel(@Parameter(description = "Id of label to be deleted")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteLabel(@Parameter(description = "Id of label to be deleted")
                               @PathVariable Long id) throws RelationException {
-        return labelService.deleteLabel(id);
+        labelService.deleteLabel(id);
     }
 }

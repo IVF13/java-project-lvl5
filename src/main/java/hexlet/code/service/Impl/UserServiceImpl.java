@@ -49,10 +49,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(UserDTO userDTO) {
-        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new EntityExistsException("User already exists");
-        }
-
         User user = userDTOMapper.userDTOToUser(userDTO);
 
         return userRepository.save(user);

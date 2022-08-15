@@ -15,6 +15,6 @@ public interface TaskStatusService {
 
     TaskStatus updateTaskStatus(Long id, TaskStatus taskStatus);
 
-    String deleteTaskStatus(Long id) throws RelationException;
+    void deleteTaskStatus(Long id) throws RelationException;
 
 }

@@ -62,8 +62,7 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public String deleteLabel(Long id) throws RelationException {
+    public void deleteLabel(Long id) throws RelationException {
         labelRepository.deleteById(id);
-        return "Task status successfully deleted";
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -71,9 +70,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String deleteUser(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
-        return "User successfully deleted";
     }
 
     @Override

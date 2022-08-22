@@ -10,8 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.EntityExistsException;
-
 @ResponseBody
 @ControllerAdvice
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -28,12 +26,6 @@ public class ExceptionHandler {
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         rollbar.error(e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<String> handleEntityExistsException(EntityExistsException e) {
-        rollbar.error(e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)

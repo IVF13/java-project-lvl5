@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -49,12 +48,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDTO createTask(TaskRequestDTO taskRequestDTO) {
         Task task = taskRequestDTOMapper.taskRequestDTOToTask(taskRequestDTO);
-
-        if (taskRepository.findByName(task.getName()).isPresent()
-                && taskRepository.findByTaskStatusId(task.getTaskStatus().getId()).isPresent()) {
-            throw new EntityExistsException("Task already exists");
-        }
-
         return taskResponseDTOMapper.taskToTaskResponseDTO(taskRepository.save(task));
     }
 

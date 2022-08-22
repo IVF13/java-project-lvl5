@@ -7,7 +7,6 @@ import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -96,8 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).get();
     }
 

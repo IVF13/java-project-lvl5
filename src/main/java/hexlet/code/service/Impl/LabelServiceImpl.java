@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import javax.management.relation.RelationException;
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -38,14 +37,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label createLabel(Label label) {
-        if (labelRepository.findByName(label.getName()).isPresent()) {
-            throw new EntityExistsException("Label already exists");
-        }
-
-        labelRepository.save(label);
-        label = labelRepository.findByName(label.getName()).get();
-
-        return label;
+        return labelRepository.save(label);
     }
 
     @Override

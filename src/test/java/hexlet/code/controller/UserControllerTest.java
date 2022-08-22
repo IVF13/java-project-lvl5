@@ -100,7 +100,7 @@ public class UserControllerTest {
     @Test
     public void twiceRegTheSameUserFailTest() throws Exception {
         utils.regDefaultUser().andExpect(status().isCreated());
-        utils.regDefaultUser().andExpect(status().isBadRequest());
+        utils.regDefaultUser().andExpect(status().isInternalServerError());
 
         assertEquals(1, userRepository.count());
     }

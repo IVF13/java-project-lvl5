@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -48,10 +47,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(UserDTO userDTO) {
-        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new EntityExistsException("User already exists");
-        }
-
         User user = userDTOMapper.userDTOToUser(userDTO);
 
         return userRepository.save(user);
@@ -74,9 +69,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String deleteUser(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
-        return "User successfully deleted";
     }
 
     @Override

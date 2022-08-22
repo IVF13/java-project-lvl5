@@ -14,6 +14,6 @@ public interface LabelService {
 
     Label updateLabel(Long id, Label label);
 
-    String deleteLabel(Long id) throws RelationException;
+    void deleteLabel(Long id) throws RelationException;
 
 }

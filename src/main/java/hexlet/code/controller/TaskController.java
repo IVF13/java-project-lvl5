@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,10 +43,11 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = TASK_ID)
-    public ResponseEntity<TaskResponseDTO> getTaskById(@Parameter(description = "Id of task to be found")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskResponseDTO getTaskById(@Parameter(description = "Id of task to be found")
                                                        @PathVariable Long id) {
         TaskResponseDTO taskResponseDTO = taskService.getTaskById(id);
-        return ResponseEntity.ok().body(taskResponseDTO);
+        return taskResponseDTO;
     }
 
     @Operation(summary = "Get list of all tasks with filtering by params if required")
@@ -57,13 +57,14 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = "")
-    public ResponseEntity<List<TaskResponseDTO>> getAllTasks(
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskResponseDTO> getAllTasks(
             @Parameter(description = "Predicate that consumes the given parameters: "
                     + "taskStatus, executorId, labels, authorId")
             @QuerydslPredicate(root = Task.class)
             Predicate predicate) {
         List<TaskResponseDTO> taskResponseDTOS = taskService.getAllTasks(predicate);
-        return ResponseEntity.ok().body(taskResponseDTOS);
+        return taskResponseDTOS;
     }
 
     @Operation(summary = "Create new task")
@@ -75,9 +76,10 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping(path = "")
-    public ResponseEntity<TaskResponseDTO> createTask(@Parameter(description = "Task data to save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskResponseDTO createTask(@Parameter(description = "Task data to save")
                                                       @RequestBody @Valid TaskRequestDTO taskRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskRequestDTO));
+        return taskService.createTask(taskRequestDTO);
     }
 
     @Operation(summary = "Update task")
@@ -89,12 +91,13 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping(path = TASK_ID)
-    public ResponseEntity<TaskResponseDTO> updateTask(@Parameter(description = "Id of task to be updated")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskResponseDTO updateTask(@Parameter(description = "Id of task to be updated")
                                                       @PathVariable Long id,
                                                       @Parameter(description = "Task data to update")
                                                       @RequestBody @Valid TaskRequestDTO taskRequestDTO) {
         TaskResponseDTO updatedTask = taskService.updateTask(id, taskRequestDTO);
-        return ResponseEntity.ok().body(updatedTask);
+        return updatedTask;
     }
 
     @Operation(summary = "Delete task by its id")
@@ -105,9 +108,10 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(path = TASK_ID)
-    public String deleteUser(@Parameter(description = "Id of task to be deleted")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@Parameter(description = "Id of task to be deleted")
                              @PathVariable Long id) {
-        return taskService.deleteTask(id);
+        taskService.deleteTask(id);
     }
 
 }

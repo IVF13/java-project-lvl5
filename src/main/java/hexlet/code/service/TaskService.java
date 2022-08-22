@@ -16,6 +16,6 @@ public interface TaskService {
 
     TaskResponseDTO updateTask(Long id, TaskRequestDTO taskRequestDTO);
 
-    String deleteTask(Long id);
+    void deleteTask(Long id);
 
 }

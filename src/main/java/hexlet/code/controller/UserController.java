@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +27,8 @@ import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 public class UserController {
 
     private static final String ONLY_OWNER_BY_ID = """
-            @userRepository.findById(#id).get().getEmail() == authentication.getName()
-        """;
+                @userRepository.findById(#id).get().getEmail() == authentication.getName()
+            """;
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String USER_ID_IN_CONTROLLER = "/{id}";
 
@@ -42,9 +41,10 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with that id not found"),
     })
     @GetMapping(path = USER_ID_IN_CONTROLLER)
-    public ResponseEntity<User> getUserById(@Parameter(description = "Id of user to be found")
-                                               @PathVariable Long id) {
-        return ResponseEntity.ok().body(userService.getUserById(id));
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserById(@Parameter(description = "Id of user to be found")
+                            @PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
 
@@ -55,8 +55,9 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(path = "")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @Operation(summary = "Create new user")
@@ -67,9 +68,10 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Not valid user data")
     })
     @PostMapping(path = "")
-    public ResponseEntity<User> createUser(@Parameter(description = "User data to save")
-                                              @RequestBody @Valid UserDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
+    @ResponseStatus(HttpStatus.CREATED)
+    public User createUser(@Parameter(description = "User data to save")
+                           @RequestBody @Valid UserDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 
     @Operation(summary = "Update user")
@@ -82,11 +84,12 @@ public class UserController {
     })
     @PutMapping(path = USER_ID_IN_CONTROLLER)
     @PreAuthorize(ONLY_OWNER_BY_ID)
-    public ResponseEntity<User> updateUser(@Parameter(description = "Id of user to be updated")
-                                              @PathVariable Long id,
-                                              @Parameter(description = "User data to update")
-                                              @RequestBody @Valid UserDTO userDTO) {
-        return ResponseEntity.ok().body(userService.updateUser(id, userDTO));
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@Parameter(description = "Id of user to be updated")
+                           @PathVariable Long id,
+                           @Parameter(description = "User data to update")
+                           @RequestBody @Valid UserDTO userDTO) {
+        return userService.updateUser(id, userDTO);
     }
 
     @Operation(summary = "Delete user by his id")
@@ -98,9 +101,10 @@ public class UserController {
     })
     @DeleteMapping(path = USER_ID_IN_CONTROLLER)
     @PreAuthorize(ONLY_OWNER_BY_ID)
-    public String deleteUser(@Parameter(description = "Id of user to be deleted")
-                             @PathVariable Long id) {
-        return userService.deleteUser(id);
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@Parameter(description = "Id of user to be deleted")
+                           @PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
 }

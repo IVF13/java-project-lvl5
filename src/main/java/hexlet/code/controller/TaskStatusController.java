@@ -6,7 +6,6 @@ import hexlet.code.service.TaskStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,32 +28,37 @@ public class TaskStatusController {
     private final TaskStatusService taskStatusService;
 
     @GetMapping(path = TASK_STATUS_ID)
-    public ResponseEntity<TaskStatus> getTaskStatusById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public TaskStatus getTaskStatusById(@PathVariable Long id) {
         TaskStatus taskStatus = taskStatusService.getTaskStatusById(id);
-        return ResponseEntity.ok().body(taskStatus);
+        return taskStatus;
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<List<TaskStatus>> getAllTaskStatuses() {
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskStatus> getAllTaskStatuses() {
         List<TaskStatus> taskStatuses = taskStatusService.getAllTaskStatuses();
-        return ResponseEntity.ok().body(taskStatuses);
+        return taskStatuses;
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<TaskStatus> createTaskStatus(@RequestBody @Valid TaskStatus taskStatus) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskStatusService.createTaskStatus(taskStatus));
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskStatus createTaskStatus(@RequestBody @Valid TaskStatus taskStatus) {
+        return taskStatusService.createTaskStatus(taskStatus);
     }
 
     @PutMapping(path = TASK_STATUS_ID)
-    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable Long id,
-                                                       @RequestBody @Valid TaskStatus taskStatus) {
+    @ResponseStatus(HttpStatus.OK)
+    public TaskStatus updateTaskStatus(@PathVariable Long id,
+                                       @RequestBody @Valid TaskStatus taskStatus) {
         TaskStatus updatedTaskStatus = taskStatusService.updateTaskStatus(id, taskStatus);
-        return ResponseEntity.ok().body(updatedTaskStatus);
+        return updatedTaskStatus;
     }
 
     @DeleteMapping(path = TASK_STATUS_ID)
-    public String deleteUser(@PathVariable Long id) throws RelationException {
-        return taskStatusService.deleteTaskStatus(id);
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable Long id) throws RelationException {
+        taskStatusService.deleteTaskStatus(id);
     }
 
 }

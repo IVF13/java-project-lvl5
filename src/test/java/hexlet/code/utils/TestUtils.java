@@ -112,7 +112,7 @@ public class TestUtils {
 
     public ResultActions perform(final MockHttpServletRequestBuilder request, final User user) throws Exception {
         final String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
-        request.header(AUTHORIZATION, "Bearer " + token);
+        request.header(AUTHORIZATION, token);
 
         return perform(request);
     }

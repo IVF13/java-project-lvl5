@@ -5,13 +5,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @AutoConfigureMockMvc
 @SpringBootTest
 class AppApplicationTests {
-
-	@Test
-	void contextLoads() {
-		assertEquals(1, 1);
-	}
+    @Test
+    void contextLoads() {
+        assertEquals(1, 1);
+    }
 
 }

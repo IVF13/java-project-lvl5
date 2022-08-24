@@ -28,12 +28,19 @@ import java.util.List;
 import static hexlet.code.configuration.SpringConfigTests.TEST_PROFILE;
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.controller.TaskController.TASK_ID;
-import static hexlet.code.utils.TestUtils.*;
+import static hexlet.code.utils.TestUtils.TEST_LABEL_NAME;
+import static hexlet.code.utils.TestUtils.TEST_TASK_STATUS_NAME;
+import static hexlet.code.utils.TestUtils.TEST_USERNAME;
+import static hexlet.code.utils.TestUtils.TEST_USERNAME_2;
+import static hexlet.code.utils.TestUtils.asJson;
+import static hexlet.code.utils.TestUtils.fromJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc

@@ -78,7 +78,7 @@
 
     <!-- Checks for whitespace                               -->
     <!-- See https://checkstyle.org/config_whitespace.html -->
-<!--    <module name="FileTabCharacter"/>-->
+    <module name="FileTabCharacter"/>
 
     <!-- Miscellaneous other checks.                   -->
     <!-- See https://checkstyle.org/config_misc.html -->
@@ -112,7 +112,7 @@
         <module name="ConstantName"/>
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
-<!--        <module name="MemberName"/>-->
+        <module name="MemberName"/>
         <module name="MethodName"/>
         <module name="PackageName"/>
         <module name="ParameterName"/>
@@ -121,7 +121,7 @@
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_import.html -->
-<!--        <module name="AvoidStarImport"/>-->
+        <module name="AvoidStarImport"/>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports">
@@ -148,8 +148,8 @@
 
         <!-- Modifier Checks                                    -->
         <!-- See https://checkstyle.org/config_modifiers.html -->
-<!--        <module name="ModifierOrder"/>-->
-<!--        <module name="RedundantModifier"/>-->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
 
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See https://checkstyle.org/config_blocks.html -->

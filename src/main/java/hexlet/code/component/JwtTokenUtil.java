@@ -15,8 +15,8 @@ import static hexlet.code.configuration.SecurityConfiguration.DEFAULT_AUTHORITIE
 
 @Component
 public class JwtTokenUtil implements Serializable {
-    private final String SIGNING_KEY = Base64.getEncoder().encodeToString("Key".getBytes());
-    private final int ACCESS_TOKEN_VALIDITY_SECONDS = 6000;
+    private static final String SIGNING_KEY = Base64.getEncoder().encodeToString("Key".getBytes());
+    private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 6000;
 
     public String getUsername(String token) {
         return getClaimFromToken(token, Claims::getSubject);

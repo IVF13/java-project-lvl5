@@ -18,7 +18,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>, QuerydslPredi
     Optional<Task> findByTaskStatusId(Long id);
 
     @Override
-    default public void customize(QuerydslBindings bindings, QTask task) {
+    default void customize(QuerydslBindings bindings, QTask task) {
     }
 
 }

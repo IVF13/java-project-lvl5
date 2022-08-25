@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -38,10 +37,6 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public TaskStatus createTaskStatus(TaskStatus taskStatus) {
-        if (taskStatusRepository.findByName(taskStatus.getName()).isPresent()) {
-            throw new EntityExistsException("Status already exists");
-        }
-
         taskStatusRepository.save(taskStatus);
         taskStatus = taskStatusRepository.findByName(taskStatus.getName()).get();
 

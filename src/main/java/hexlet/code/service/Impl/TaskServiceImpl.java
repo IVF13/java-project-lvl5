@@ -10,6 +10,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -41,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseDTO> getAllTasks(Predicate predicate) {
-        List<Task> tasks = (List<Task>) taskRepository.findAll(predicate);
+        List<Task> tasks = Streamable.of(taskRepository.findAll(predicate)).toList();
         return tasks.stream().map(taskResponseDTOMapper::taskToTaskResponseDTO).toList();
     }
 
